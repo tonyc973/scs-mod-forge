@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Sources of truth, in priority order">
+<title>Sources of truth, in priority order</title>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#57606A"/></marker>
+  <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+    <feDropShadow dx="0" dy="1.5" stdDeviation="2.2" flood-color="#000" flood-opacity="0.08"/>
+  </filter>
+</defs>
+<rect width="1280" height="520" rx="16" fill="#FFFFFF"/>
+<text x="56" y="50" font-size="13" font-weight="700" fill="#59636E" text-anchor="start" letter-spacing="0.5">scs-mod-forge</text>
+<text x="56" y="78" font-size="22" font-weight="700" fill="#1F2328" text-anchor="start">Where truth comes from (highest priority first)</text>
+<rect x="50.0" y="112" width="1180" height="52" rx="12" fill="#E6F6F4" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="50.0" y="112" width="6" height="52" rx="3" fill="#0E9F8E"/>
+<circle cx="82.0" cy="138" r="11" fill="#0E9F8E"/>
+<text x="82.0" y="142.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+<text x="104.0" y="143" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">Real vehicle</text>
+<text x="600" y="143" font-size="13" font-weight="400" fill="#59636E" text-anchor="start">the modder&#x27;s own car: measurements, photos, rpm at speed</text>
+<rect x="90.0" y="176" width="1100" height="52" rx="12" fill="#E8F6EE" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="90.0" y="176" width="6" height="52" rx="3" fill="#22A55B"/>
+<circle cx="122.0" cy="202" r="11" fill="#22A55B"/>
+<text x="122.0" y="206.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+<text x="144.0" y="207" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">The game</text>
+<text x="600" y="207" font-size="13" font-weight="400" fill="#59636E" text-anchor="start">what actually renders and how it drives: screenshots, telemetry</text>
+<rect x="130.0" y="240" width="1020" height="52" rx="12" fill="#EEEFFE" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="130.0" y="240" width="6" height="52" rx="3" fill="#6366F1"/>
+<circle cx="162.0" cy="266" r="11" fill="#6366F1"/>
+<text x="162.0" y="270.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+<text x="184.0" y="271" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">SCS docs &amp; vanilla files</text>
+<text x="600" y="271" font-size="13" font-weight="400" fill="#59636E" text-anchor="start">what Prism3D supports and how vanilla content does it</text>
+<rect x="170.0" y="304" width="940" height="52" rx="12" fill="#F3EEFE" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="170.0" y="304" width="6" height="52" rx="3" fill="#8B5CF6"/>
+<circle cx="202.0" cy="330" r="11" fill="#8B5CF6"/>
+<text x="202.0" y="334.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+<text x="224.0" y="335" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">OEM &amp; independent measurements</text>
+<text x="600" y="335" font-size="13" font-weight="400" fill="#59636E" text-anchor="start">press images, owner&#x27;s manuals, road tests (e.g. ADAC)</text>
+<rect x="210.0" y="368" width="860" height="52" rx="12" fill="#FDF3E6" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="210.0" y="368" width="6" height="52" rx="3" fill="#E08A1E"/>
+<circle cx="242.0" cy="394" r="11" fill="#E08A1E"/>
+<text x="242.0" y="398.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+<text x="264.0" y="399" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">Enthusiast sources</text>
+<text x="600" y="399" font-size="13" font-weight="400" fill="#59636E" text-anchor="start">forums, owner photos: cross-check, watch for modifications</text>
+<rect x="250.0" y="432" width="780" height="52" rx="12" fill="#F6F8FA" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="250.0" y="432" width="6" height="52" rx="3" fill="#8C959F"/>
+<circle cx="282.0" cy="458" r="11" fill="#8C959F"/>
+<text x="282.0" y="462.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
+<text x="304.0" y="463" font-size="15" font-weight="700" fill="#1F2328" text-anchor="start">The AI&#x27;s memory</text>
+<text x="600" y="463" font-size="13" font-weight="400" fill="#59636E" text-anchor="start">lowest priority: never used alone</text>
+</svg>

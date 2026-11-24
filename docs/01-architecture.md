@@ -1,105 +1,160 @@
 # 01 · Architecture
 
-This document explains **who does what**, **what flows between them** and **why the work is split this way**.
+This document explains **what the parts are**, **what each one is responsible for**, **what passes between them**, and **where mistakes get caught**. If you only read one document in this repository, read this one.
 
-## 1. The problem the architecture solves
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/architecture-dark.svg">
+  <img alt="Architecture overview" src="assets/architecture-light.svg" width="100%">
+</picture>
 
-An AI agent connected to Blender is a strong *executor*. Left alone, it has four weaknesses that matter for realistic modding:
+---
 
-1. **It optimizes for what it can see.** It sees Blender, not the game. Shading, culling, triangulation, mirror cameras, mipmaps and lamp masks only show their real behavior in Prism3D.
-2. **It fills gaps with plausible guesses.** Without references it "remembers" how a car interior looks. Without documentation it invents `.sii` attributes that look right and do nothing.
-3. **It declares success early.** "Implemented" usually means "I wrote something", not "it works in game".
-4. **It patches symptoms.** A black mirror gets a new material instead of an investigation into *which mesh* is black.
+## 1. The problem this architecture solves
 
-The architecture puts a role and an artifact in front of each weakness.
+An AI agent connected to Blender is a strong **executor**: it can model, unwrap, write Python and edit definition files tirelessly. For realistic modding it has four structural weaknesses:
 
-## 2. Roles
+| Weakness | What it looks like in practice | Architectural answer |
+|---|---|---|
+| **It sees Blender, not the game** | Looks perfect in the viewport; in game: sawtooth edges, missing faces, black mirrors, moiré | The **Game** is a role, and acceptance requires in-game screenshots |
+| **It fills gaps with plausible guesses** | "Remembers" how a Civic dashboard looks; invents `.sii` attributes that look right and do nothing | A **Director** supplies inspected references and engine documentation *before* work starts |
+| **It declares success early** | "Implemented the frit band", which never appeared in game | **Acceptance gates** tied to evidence, plus an A/B-or-revert rule |
+| **It patches symptoms** | A black mirror gets a third new material instead of an investigation | **Diagnose-first** steps: colour-tag builds, audits, raycasts; escalation after two failures |
 
-### 👤 The Modder (owner and QA)
-- Plays the game and takes the **in-game screenshots** (F12) that are the only accepted evidence.
-- States what bothers them in plain language. "The mirror shows the road in front" is a perfect bug report.
-- **Owns the real-world truth.** If the modder has access to the real vehicle, they confirm tyre size, rpm at a given speed, headliner colour and similar facts. Internet specs are hypotheses until then.
-- Decides when a round is accepted.
+Each weakness gets a role, an artifact or a rule. Nothing depends on the agent "trying harder".
 
-### 🧭 The Director (research and prompt author)
-A chat assistant with web search and a browser. It never touches the mod files. Its job is to turn complaints into **work orders that cannot be passed without doing the work**.
-- **Triage**: looks at each screenshot and names the defect precisely (e.g. "the glass is rendered but the housing faces are missing; looks like flipped normals or a culled part").
-- **Reference hunt**: finds the best real references for each component (OEM press images, owner's-manual diagrams, close-ups, night shots, independent road-test measurements) and *looks at them* before linking them.
-- **Engine-truth check**: reads SCS documentation and phrases every requirement in terms of what Prism3D supports.
-- **Round prompt**: writes one structured prompt per round (see [04](04-round-prompts.md)).
+---
 
-### 🛠️ The Builder (Claude Code + Blender MCP)
-- Executes the round: modeling, UVs, materials, export with SCS Blender Tools, `.sii` definitions.
-- Uses **tools instead of eyes**: OpenCV to measure from photos, raycasts to measure gaps, mesh audits, diagnostic colour builds.
-- Asks the modder for **specific screenshots** (fixed views) and compares them with the references.
-- Reports diagnosis, changes, evidence and what is still different.
+## 2. Three layers
 
-### 🎮 The Game (ground truth)
-ETS2 / ATS with the mod loaded. Nothing is "done" until it is right here.
+### 2.1 Truth layer: where facts come from
 
-## 3. Artifacts
-
-| Artifact | Produced by | Consumed by | Purpose |
+| Source | Examples | Who consults it | Authority |
 |---|---|---|---|
-| Bug screenshots + complaint | Modder | Director | Input of a round |
-| Reference table | Director | Builder | Real photos/data per component, each one inspected |
-| Round prompt | Director | Builder | The work order (constraints, refs, steps, acceptance) |
-| `CLAUDE.md` standing rules | Modder (from template) | Builder | Rules valid in every round |
-| Diagnostic build (`_diag`) + colour map | Builder | Modder → Builder | Identify which file/mesh produces a pixel |
-| Measurement files (`*_measurements.md`, overlays) | Builder | Builder, Director | Proportions from photos, gap reports |
-| In-game screenshots V1–V5 | Modder | Builder, Director | Acceptance evidence |
-| A/B comparison images | Builder | Modder | Before/after next to the reference |
-| Round report | Builder | Modder, Director | Diagnosis, changes, evidence, open differences |
+| **Real vehicle** | tyre sidewall, rpm at 130 km/h, headliner colour, owner's photos | Modder (on request) | Highest. Overrides internet specs |
+| **Real-world references** | OEM press images, owner's-manual diagrams, independent road tests, review galleries, in-use photos | Director | High, once inspected and checked for variant/market |
+| **Engine truth** | SCS Modding Wiki, vanilla game files, SCS Blender Tools docs | Director (to phrase work), Builder (for syntax) | Absolute for *how* something can be built |
+| **Measured behaviour** | in-game screenshots, telemetry (speed vs time) | Builder, Director | The acceptance evidence |
 
-## 4. Data flow of one round
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/sources-of-truth-dark.svg">
+  <img alt="Sources of truth in priority order" src="assets/sources-of-truth-light.svg" width="100%">
+</picture>
 
-```mermaid
-sequenceDiagram
-    participant M as Modder
-    participant D as Director
-    participant B as Builder (Claude Code)
-    participant G as Game
+When two sources disagree, the higher one wins. In the Civic project, published US gear data gave ~3 000 rpm at 130 km/h in 6th, while an independent EU test measured ~3 100 rpm. The rule makes the next step obvious: the owner reads the tachometer on the real car, and that number sets the final drive.
 
-    M->>D: screenshots + "this looks wrong because…"
-    D->>D: triage each defect
-    D->>D: hunt & inspect references
-    D->>D: check engine docs / vanilla patterns
-    D->>M: round prompt (.md)
-    M->>B: round prompt
-    B->>B: diagnose (colour tags, audits, raycasts)
-    B->>B: build in Blender, export
-    B->>M: "take V1, V2, V4 screenshots"
-    M->>G: load mod, F12
-    G-->>M: screenshots
-    M->>B: screenshots
-    B->>B: compare vs references (side-by-side, overlay)
-    alt matches
-        B->>M: round report + A/B evidence
-    else differs
-        B->>B: iterate (or revert if worse)
-    end
-```
+### 2.2 Role layer: who does what
 
-## 5. Why split Director and Builder?
+Four roles, in the order work flows. One person can play Modder; the Director and Builder can even be the same AI product in different sessions. What matters is that the **responsibilities and hand-offs stay separate**.
 
-You *could* let one agent do everything. Separating the roles still pays off:
+### 2.3 Artifact layer: what passes between roles
 
-- **Context hygiene.** Reference hunting produces many dead ends (aftermarket parts, wrong generation, wrong market). The Director absorbs that noise. The Builder gets a clean, verified table.
-- **Independent judgment.** The Director reviews the Builder's output (the modder's screenshots) with fresh eyes. An agent grading its own work tends to see what it intended to build.
-- **Different tools.** Browsing image galleries and reading wiki pages is the Director's strength. File manipulation, Python and Blender belong to the Builder.
-- **A paper trail.** Each round prompt is a document. You can publish it, reuse it for another vehicle and see how the method evolved (see the [case study](../examples/civic-fc/README.md)).
+Every hand-off is a **file**, so it can be reviewed, versioned and reused. See §4.
 
-## 6. Where truth comes from (priority order)
+---
 
-1. **The modder's real vehicle** (measurements, photos, behaviour).
-2. **The game** (what actually renders and how it drives).
-3. **SCS documentation and vanilla game files** (what the engine supports and how).
-4. **OEM material and independent measurements** (press photos, owner's manuals, road tests such as ADAC).
-5. **Enthusiast sources** (forums, owner photos), cross-checked.
-6. **The AI's memory.** Lowest priority, never used alone.
+## 3. The roles in detail
+
+### 👤 Modder: owner and QA
+
+| | |
+|---|---|
+| **Responsible for** | Playing and noticing; describing defects in plain words; taking the requested in-game views (F12); confirming specs on the real vehicle; accepting or rejecting a round |
+| **Inputs** | Round reports, A/B comparisons, questions about the real vehicle |
+| **Outputs** | Bug screenshots + one line per defect; in-game views V1–V5; owner's measurements |
+| **Tools** | The game, a phone/tape measure/OBD dongle for the real car |
+| **Must not** | Accept a round on the strength of Blender renders |
+
+The modder's complaints don't have to be technical. "The black covers everything when I look sideways" gave the Director enough to suspect an opaque exterior-model door surface.
+
+### 🧭 Director: research and direction
+
+| | |
+|---|---|
+| **Responsible for** | Triage (what exactly is wrong, likely causes); finding and **inspecting** references; checking what Prism3D supports; writing one **round prompt** per round; reviewing the next batch of screenshots with fresh eyes |
+| **Inputs** | Screenshots + complaints; previous round reports |
+| **Outputs** | Reference table; round prompt (`.md`); engine-truth notes |
+| **Tools** | A chat assistant with web search, a browser (to open image galleries and wiki pages) and the ability to look at images |
+| **Must not** | Invent engine features; link references it hasn't looked at; touch mod files |
+
+Typical catches that only happen when references are actually inspected: an aftermarket ring on a "tweeter" photo, a market-specific camera under a mirror, a 7th-generation car in a 10th-generation search result.
+
+### 🛠️ Builder: execution
+
+| | |
+|---|---|
+| **Responsible for** | Diagnosing before changing; measuring instead of eyeballing; modeling, materials, UVs, export; `.sii` definitions following vanilla patterns; asking for specific in-game views; comparing screenshots with references; keeping or reverting each change |
+| **Inputs** | Round prompt; standing rules (`CLAUDE.md`); vanilla data; references |
+| **Outputs** | The mod; diagnostic builds; measurement files; A/B comparisons; round report |
+| **Tools** | Claude Code, Blender via an MCP server, SCS Blender Tools, the Python and Blender tools in this repo |
+| **Must not** | Mark anything done without in-game evidence; use attributes it can't cite; touch systems the round marks as working; copy assets from other mods |
+
+### 🎮 Game: ground truth
+
+| | |
+|---|---|
+| **Responsible for** | Showing what really happens: rendering, culling, triangulation, lamps, mirrors, dashboard UI, physics |
+| **Produces** | Views V1–V5 (via the Modder), telemetry |
+| **Why it is a role** | Treating the game as an actor with its own output keeps everyone honest. "Done" means "the game shows it" |
+
+---
+
+## 4. Artifact contracts
+
+| Artifact | Owner | Format | Lifecycle | Contract (what makes it valid) |
+|---|---|---|---|---|
+| Bug report | Modder | screenshots + text | per round | One line per defect; standard view if possible |
+| Reference table | Director | Markdown table ([template](../templates/reference-table.md)) | per component, reused | Every row inspected; variant/market and caveats noted; scale anchors listed |
+| Round prompt | Director | Markdown ([template](../templates/round-prompt.md)) | per round, archived | Per item: *now / real / diagnose / build / accept*; engine-true; protects working systems; lists owner questions |
+| Standing rules | Modder | `CLAUDE.md` ([template](../templates/CLAUDE.md)) | per project | Names game + engine; evidence rules; standard views; no invented attributes |
+| Diagnostic build | Builder | `*_diag` mod + `diag_colors.md` | throw-away | Never shipped; colour map filled in |
+| Measurements | Builder | JSON/MD + annotated images | per component | Derived from tools, with the scale anchor stated |
+| In-game views | Modder | F12 PNGs | per iteration | Same head position, named V1–V5 |
+| A/B comparison | Builder | side-by-side / overlay PNGs | per change | Before, after and reference in one image |
+| Round report | Builder | Markdown | per round | Diagnosis, files changed, evidence, open differences, owner questions |
+
+---
+
+## 5. Control points: where mistakes are caught
+
+The architecture is a series of **gates**. Each one stops a specific class of error before it becomes expensive.
+
+| Gate | When | Checks | Stops |
+|---|---|---|---|
+| **G1 · Reference gate** | before the prompt | every reference opened, variant correct | modeling the wrong trim/market, aftermarket parts |
+| **G2 · Engine gate** | before the prompt | mechanism exists in wiki/vanilla | requirements that are impossible in Prism3D (e.g. shader code) |
+| **G3 · Diagnosis gate** | before building | root cause written; audit clean; colour-tag if unclear | patching symptoms; editing the wrong file |
+| **G4 · Evidence gate** | after each change | in-game view next to reference; A/B | "done in Blender, broken in game"; regressions |
+| **G5 · Acceptance gate** | end of round | [checklist](../templates/acceptance-checklist.md) | silently dropped requests; shipped diagnostic builds |
+
+**Escalation rule:** if the same item fails G4 twice, the Builder stops retrying. It runs colour-tag diagnostics and studies how a working mod achieves the effect (learning the technique, never copying assets). If the engine really can't do it, the Builder reports the evidence and waits for the Modder's decision.
+
+---
+
+## 6. Why separate Director and Builder?
+
+1. **Context hygiene.** Reference hunting is mostly dead ends. The Director absorbs that noise and hands over a short, verified table.
+2. **Independent review.** The agent that built something tends to see what it intended to build. The Director reviews screenshots without that bias.
+3. **Different strengths.** Browsing galleries and reading documentation versus manipulating files, running Python and driving Blender.
+4. **A paper trail.** Round prompts are documents: reviewable, reusable for the next vehicle, and a record of how the method improved (see the [case study](../examples/civic-fc/README.md)).
+
+You can run both roles with one assistant in two separate conversations. Don't merge them into one long session.
+
+---
 
 ## 7. Boundaries
 
-- The Builder never redistributes third-party assets (photos, sounds, other mods' models). Other mods may be **studied to learn a technique** (e.g. how someone wired an interior mirror camera), never copied.
-- The Director never invents engine features. If the wiki and vanilla files don't show a mechanism, the prompt says "find out whether this is possible; if not, report and propose the closest alternative; wait for approval".
-- The modder approves every fallback that changes the look (e.g. a static mirror instead of a live one).
+- **Legal.** References are linked, never redistributed. Other mods may be studied to learn a technique, never copied. Sounds come only from your own recordings or properly licensed sources.
+- **Engine.** If neither the wiki nor vanilla files show a mechanism, the prompt says: find out, report, propose the closest alternative, wait for approval.
+- **Look-changing fallbacks** (e.g. a static mirror instead of a live one) are the Modder's decision.
+
+---
+
+## 8. Adapting the architecture
+
+| Your situation | Adaptation |
+|---|---|
+| No access to the real vehicle | Drop level 1 of the truth hierarchy. Rely on independent measured tests, and mark remaining specs as assumptions in the round report |
+| A truck instead of a car | Same layers. Vanilla trucks are much closer templates, so G2 gets easier |
+| ATS instead of ETS2 | Same method. Check per-game differences on the wiki (units, IDs added in specific versions) |
+| No browser for the Director | Use web search plus images the Modder downloads. G1 still requires *looking* at each one |
+| Team of modders | One Director per vehicle; Builders per area (interior / exterior / physics / sound), each with its own round prompts |

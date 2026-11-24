@@ -2,6 +2,13 @@
 
 A **round** is one cycle from "this looks wrong" to "accepted in game". Keep rounds small: 3–6 defects. Big rounds dilute attention and make it hard to tell which change broke what.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/round-loop-dark.svg">
+  <img alt="The nine stages of one round" src="assets/round-loop-light.svg" width="100%">
+</picture>
+
+Stages 1–5 belong to the Modder and the Director and produce **one round prompt**. Stages 6–8 are the Builder's loop with the game: diagnose, build, verify, and back to diagnose (or revert) until the in-game views match the references. Stage 9 closes the round with the acceptance checklist.
+
 ## Stage 0: Standing setup (once per project)
 
 - Copy [`templates/CLAUDE.md`](../templates/CLAUDE.md) into the mod project root and adapt it (game, vehicle, paths).

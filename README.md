@@ -36,39 +36,35 @@ The fixes were not "better prompts" in general. They were **structural**:
 
 ## Architecture at a glance
 
-```mermaid
-flowchart LR
-    subgraph Human["👤 Modder (owner & QA)"]
-        H1[Plays the game<br/>takes F12 screenshots]
-        H2[Owns the real-world truth<br/>photos, measurements, decisions]
-    end
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/architecture-dark.svg">
+  <img alt="scs-mod-forge architecture: sources of truth, four roles (Modder, Director, Builder, Game), artifacts, and the numbered verification loop" src="docs/assets/architecture-light.svg" width="100%">
+</picture>
 
-    subgraph Director["🧭 Director (research + prompt author)<br/>chat assistant with web & browser"]
-        D1[Screenshot triage:<br/>what is wrong, why]
-        D2[Reference hunt:<br/>OEM, manuals, close-ups, measured data]
-        D3[Engine-truth check:<br/>SCS wiki, vanilla patterns]
-        D4[Round prompt:<br/>constraints, refs, steps, acceptance]
-    end
+**How to read it.** The diagram has three horizontal layers:
 
-    subgraph Builder["🛠️ Builder (Claude Code)"]
-        B1[Blender via MCP<br/>modeling, UVs, materials]
-        B2[Python tools<br/>measure, compare, calibrate]
-        B3[SCS Blender Tools export<br/>.sii / .pim / .tobj / .bank]
-    end
+- **Truth** (top): where facts come from. The Director consults the real vehicle, real-world references and engine documentation (dashed arrows) before it asks for anything. The game itself produces the last kind of truth: what actually renders and drives.
+- **Roles** (middle): four actors, left to right in the order work flows. Each has one job it is good at and a few things it must never do.
+- **Artifacts** (bottom): what each role hands over. Every artifact is a file you can open, review and keep.
 
-    Game[("🎮 ETS2 / ATS<br/>ground truth")]
+The numbered arrows are one **round**:
 
-    H1 -- screenshots + complaint --> D1
-    D1 --> D2 --> D3 --> D4
-    D4 -- round prompt --> B1
-    B1 --> B2 --> B3 --> Game
-    Game -- requested views V1–V5 --> H1
-    H1 -- screenshots --> B2
-    B2 -- A/B vs reference --> B1
-    H2 -. confirms specs .-> D4
-```
+1. The **Modder** reports what looks wrong, with screenshots.
+2. The **Director** gathers and inspects real references, and checks what the engine can do.
+3. The Director hands the Builder **one round prompt**: what is wrong now, how the real part looks, how to build it within engine limits, and how to prove it.
+4. The **Builder** (Claude Code + Blender MCP) diagnoses, builds and exports the mod.
+5. The **Game** renders the agreed views (V1–V5).
+6. The Modder sends the **F12 screenshots** back to the Builder.
+7. The Builder compares them with the references. It **iterates, or reverts** if the change isn't clearly better.
 
-Full explanation: **[docs/01-architecture.md](docs/01-architecture.md)**
+Steps 4 → 7 repeat until the screenshots match. Nothing is accepted on the strength of a Blender render.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/round-loop-dark.svg">
+  <img alt="The nine stages of one round: capture, triage, references, engine truth, round prompt, diagnose, build, verify in game, report and close" src="docs/assets/round-loop-light.svg" width="100%">
+</picture>
+
+Full explanation: **[docs/01-architecture.md](docs/01-architecture.md)** · stage by stage: **[docs/02-round-workflow.md](docs/02-round-workflow.md)**
 
 ---
 
