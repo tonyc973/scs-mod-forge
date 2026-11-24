@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+*.blend1
+renders/
+refs/
+diag_textures/
+*_diag/
+.DS_Store
