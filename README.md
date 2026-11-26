@@ -1,5 +1,7 @@
 # scs-mod-forge
 
+<img src="docs/assets/banner.gif" alt="scs-mod-forge: research in the browser, build in Blender, verify in the game. An original 3D sedan, modelled and rendered in Blender, turns on a turntable." width="100%">
+
 **Build realistic Euro Truck Simulator 2 / American Truck Simulator mods with two Claude agents: one that researches real photos in your browser, one that builds in Blender.**
 
 | Step | Who | Does what |
