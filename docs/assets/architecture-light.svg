@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="900" viewBox="0 0 1280 900" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="scs-mod-forge architecture: roles, sources of truth, artifacts and the verification loop">
-<title>scs-mod-forge architecture: roles, sources of truth, artifacts and the verification loop</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1010" viewBox="0 0 1280 1010" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="scs-mod-forge architecture: Claude in Chrome researches real references and writes the prompt, Claude Code builds in Blender through MCP, ETS2 verifies">
+<title>scs-mod-forge architecture: Claude in Chrome researches real references and writes the prompt, Claude Code builds in Blender through MCP, ETS2 verifies</title>
 <defs>
   <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
     <path d="M0,0 L10,5 L0,10 z" fill="#57606A"/></marker>
@@ -7,193 +7,224 @@
     <feDropShadow dx="0" dy="1.5" stdDeviation="2.2" flood-color="#000" flood-opacity="0.08"/>
   </filter>
 </defs>
-<rect width="1280" height="900" rx="16" fill="#FFFFFF"/>
-<text x="56" y="50" font-size="13" font-weight="700" fill="#59636E" text-anchor="start" letter-spacing="0.5">scs-mod-forge</text>
-<text x="56" y="78" font-size="22" font-weight="700" fill="#1F2328" text-anchor="start">Architecture: four roles, one loop, the game as the judge</text>
-<rect x="24" y="104" width="1232" height="128" rx="12" fill="#F6F8FA"/>
-<text x="38" y="168.0" font-size="10" font-weight="700" fill="#8C959F" letter-spacing="2" text-anchor="middle" transform="rotate(-90 38 168.0)">TRUTH</text>
-<rect x="24" y="252" width="1232" height="300" rx="12" fill="#F6F8FA"/>
-<text x="38" y="402.0" font-size="10" font-weight="700" fill="#8C959F" letter-spacing="2" text-anchor="middle" transform="rotate(-90 38 402.0)">ROLES</text>
-<rect x="24" y="572" width="1232" height="196" rx="12" fill="#F6F8FA"/>
-<text x="38" y="670.0" font-size="10" font-weight="700" fill="#8C959F" letter-spacing="2" text-anchor="middle" transform="rotate(-90 38 670.0)">ARTIFACTS</text>
-<rect x="62" y="118" width="264" height="100" rx="12" fill="#F3EEFE" stroke="#D0D7DE" stroke-width="1"/>
-<rect x="62" y="118" width="4" height="100" rx="2" fill="#8B5CF6"/>
-<text x="78" y="143" font-size="13.5" font-weight="700" fill="#1F2328" text-anchor="start">Real vehicle</text>
-<text x="78" y="164" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">tyre size, rpm at speed, colours</text>
-<text x="78" y="182" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">owner&#x27;s photos &amp; measurements</text>
-<text x="78" y="200" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">highest authority</text>
-<rect x="368" y="118" width="264" height="100" rx="12" fill="#F3EEFE" stroke="#D0D7DE" stroke-width="1"/>
-<rect x="368" y="118" width="4" height="100" rx="2" fill="#8B5CF6"/>
-<text x="384" y="143" font-size="13.5" font-weight="700" fill="#1F2328" text-anchor="start">Real-world references</text>
-<text x="384" y="164" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">OEM press, owner&#x27;s manual diagrams</text>
-<text x="384" y="182" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">road tests with measurements</text>
-<text x="384" y="200" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">close-ups, night &amp; in-use photos</text>
-<rect x="674" y="118" width="264" height="100" rx="12" fill="#F3EEFE" stroke="#D0D7DE" stroke-width="1"/>
-<rect x="674" y="118" width="4" height="100" rx="2" fill="#8B5CF6"/>
-<text x="690" y="143" font-size="13.5" font-weight="700" fill="#1F2328" text-anchor="start">Engine truth</text>
-<text x="690" y="164" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">SCS Modding Wiki</text>
-<text x="690" y="182" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">vanilla game files (patterns)</text>
-<text x="690" y="200" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">SCS Blender Tools docs</text>
-<rect x="980" y="118" width="264" height="100" rx="12" fill="#F3EEFE" stroke="#D0D7DE" stroke-width="1"/>
-<rect x="980" y="118" width="4" height="100" rx="2" fill="#8B5CF6"/>
-<text x="996" y="143" font-size="13.5" font-weight="700" fill="#1F2328" text-anchor="start">Measured behaviour</text>
-<text x="996" y="164" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">in-game screenshots (F12)</text>
-<text x="996" y="182" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">telemetry CSV (speed vs time)</text>
-<text x="996" y="200" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">what actually renders &amp; drives</text>
+<rect width="1280" height="1010" rx="16" fill="#FFFFFF"/>
+<text x="40" y="46" font-size="13" font-weight="700" fill="#59636E" text-anchor="start" letter-spacing="0.5">scs-mod-forge</text>
+<text x="40" y="74" font-size="22" font-weight="700" fill="#1F2328" text-anchor="start">Research in the browser → build in Blender → verify in the game</text>
+<rect x="24" y="96" width="1232" height="92" rx="14" fill="#F6F8FA" stroke="#D0D7DE" stroke-width="1"/>
+<text x="40" y="120" font-size="10.5" font-weight="700" fill="#8C959F" text-anchor="start" letter-spacing="1.5">SOURCES</text>
+<text x="40" y="138" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">the web, opened in Chrome</text>
+<rect x="214" y="110" width="162.0" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="227" cy="123" r="4" fill="#8B5CF6"/>
+<text x="237" y="127.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Bing / Google Images</text>
+<rect x="384.0" y="110" width="175.2" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="397.0" cy="123" r="4" fill="#8B5CF6"/>
+<text x="407.0" y="127.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">OEM &amp; dealer galleries</text>
+<rect x="567.2" y="110" width="129.0" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="580.2" cy="123" r="4" fill="#8B5CF6"/>
+<text x="590.2" y="127.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Owner&#x27;s manuals</text>
+<rect x="704.2" y="110" width="135.6" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="717.2" cy="123" r="4" fill="#8B5CF6"/>
+<text x="727.2" y="127.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Review galleries</text>
+<rect x="847.8000000000001" y="110" width="109.19999999999999" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="860.8000000000001" cy="123" r="4" fill="#8B5CF6"/>
+<text x="870.8000000000001" y="127.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Owner forums</text>
+<rect x="965.0" y="110" width="175.2" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="978.0" cy="123" r="4" fill="#8B5CF6"/>
+<text x="988.0" y="127.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Road tests (e.g. ADAC)</text>
+<text x="40" y="168" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">documentation &amp; files</text>
+<rect x="214" y="152" width="135.6" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="227" cy="165" r="4" fill="#6366F1"/>
+<text x="237" y="169.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">SCS Modding Wiki</text>
+<rect x="357.6" y="152" width="175.2" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="370.6" cy="165" r="4" fill="#6366F1"/>
+<text x="380.6" y="169.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">SCS Blender Tools docs</text>
+<rect x="564.8" y="152" width="228.0" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="577.8" cy="165" r="4" fill="#E08A1E"/>
+<text x="587.8" y="169.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Vanilla game files (extracted)</text>
+<rect x="800.8" y="152" width="115.8" height="26" rx="13" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<circle cx="813.8" cy="165" r="4" fill="#0E9F8E"/>
+<text x="823.8" y="169.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Your real car</text>
+<rect x="24" y="222" width="430" height="600" rx="16" fill="#EEEFFE" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="24" y="222" width="430" height="6" rx="3" fill="#6366F1"/>
+<circle cx="50" cy="256" r="11" fill="#6366F1"/>
+<text x="50" y="260.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+<text x="70" y="253" font-size="10.5" font-weight="700" fill="#6366F1" text-anchor="start" letter-spacing="1.3">RESEARCH &amp; PROMPT</text>
+<text x="70" y="275" font-size="19" font-weight="700" fill="#1F2328" text-anchor="start">Claude + Claude in Chrome</text>
+<text x="42" y="302" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">claude.ai + the Chrome extension: browses, views images, searches</text>
+<rect x="488" y="222" width="420" height="600" rx="16" fill="#FDF3E6" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="488" y="222" width="420" height="6" rx="3" fill="#E08A1E"/>
+<circle cx="514" cy="256" r="11" fill="#E08A1E"/>
+<text x="514" y="260.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+<text x="534" y="253" font-size="10.5" font-weight="700" fill="#E08A1E" text-anchor="start" letter-spacing="1.3">BUILD</text>
+<text x="534" y="275" font-size="19" font-weight="700" fill="#1F2328" text-anchor="start">Claude Code + Blender MCP</text>
+<text x="506" y="302" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">in your mod project folder, connected to a running Blender</text>
+<rect x="942" y="222" width="314" height="600" rx="16" fill="#E8F6EE" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="942" y="222" width="314" height="6" rx="3" fill="#22A55B"/>
+<circle cx="968" cy="256" r="11" fill="#22A55B"/>
+<text x="968" y="260.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+<text x="988" y="253" font-size="10.5" font-weight="700" fill="#22A55B" text-anchor="start" letter-spacing="1.3">VERIFY</text>
+<text x="988" y="275" font-size="19" font-weight="700" fill="#1F2328" text-anchor="start">ETS2 / ATS</text>
+<text x="960" y="302" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">Prism3D engine: the only judge</text>
 <g filter="url(#shadow)">
-<rect x="62" y="268" width="264" height="232" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="40" y="322" width="398" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
 </g>
-<rect x="62" y="268" width="264" height="5" rx="2" fill="#0E9F8E"/>
-<rect x="63" y="273" width="262" height="56" rx="0" fill="#E6F6F4"/>
-<text x="80" y="295" font-size="10.5" font-weight="700" fill="#0E9F8E" text-anchor="start" letter-spacing="1.2">OWNER · QA</text>
-<text x="80" y="317" font-size="18" font-weight="700" fill="#1F2328" text-anchor="start">Modder</text>
-<text x="80" y="352" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">human, plays the game</text>
-<circle cx="84" cy="376" r="2.6" fill="#0E9F8E"/>
-<text x="95" y="380" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Reports defects in plain words</text>
-<circle cx="84" cy="400" r="2.6" fill="#0E9F8E"/>
-<text x="95" y="404" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Takes the requested F12 views</text>
-<circle cx="84" cy="424" r="2.6" fill="#0E9F8E"/>
-<text x="95" y="428" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Confirms specs on the real car</text>
-<circle cx="84" cy="448" r="2.6" fill="#0E9F8E"/>
-<text x="95" y="452" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Accepts or rejects a round</text>
+<rect x="40" y="322" width="4" height="84" rx="2" fill="#6366F1"/>
+<rect x="54" y="334" width="30" height="20" rx="6" fill="#EEEFFE"/>
+<text x="69" y="348.5" font-size="11" font-weight="700" fill="#6366F1" text-anchor="middle">1a</text>
+<text x="94" y="349" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Read your screenshots</text>
+<text x="94" y="369" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">names each defect precisely</text>
+<text x="94" y="386" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">ranks the likely causes (normals, culling, IDs…)</text>
 <g filter="url(#shadow)">
-<rect x="368" y="268" width="264" height="232" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="40" y="420" width="398" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
 </g>
-<rect x="368" y="268" width="264" height="5" rx="2" fill="#6366F1"/>
-<rect x="369" y="273" width="262" height="56" rx="0" fill="#EEEFFE"/>
-<text x="386" y="295" font-size="10.5" font-weight="700" fill="#6366F1" text-anchor="start" letter-spacing="1.2">RESEARCH · DIRECTION</text>
-<text x="386" y="317" font-size="18" font-weight="700" fill="#1F2328" text-anchor="start">Director</text>
-<text x="386" y="352" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">chat assistant + web + browser</text>
-<circle cx="390" cy="376" r="2.6" fill="#6366F1"/>
-<text x="401" y="380" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Triages each screenshot</text>
-<circle cx="390" cy="400" r="2.6" fill="#6366F1"/>
-<text x="401" y="404" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Finds &amp; inspects references</text>
-<circle cx="390" cy="424" r="2.6" fill="#6366F1"/>
-<text x="401" y="428" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Checks what Prism3D supports</text>
-<circle cx="390" cy="448" r="2.6" fill="#6366F1"/>
-<text x="401" y="452" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Writes the round prompt</text>
+<rect x="40" y="420" width="4" height="84" rx="2" fill="#6366F1"/>
+<rect x="54" y="432" width="30" height="20" rx="6" fill="#EEEFFE"/>
+<text x="69" y="446.5" font-size="11" font-weight="700" fill="#6366F1" text-anchor="middle">1b</text>
+<text x="94" y="447" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Hunt real photos in Chrome</text>
+<text x="94" y="467" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">image search, OEM / review galleries, forums</text>
+<text x="94" y="484" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">pulls the direct image URLs from result pages</text>
 <g filter="url(#shadow)">
-<rect x="674" y="268" width="264" height="232" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="40" y="518" width="398" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
 </g>
-<rect x="674" y="268" width="264" height="5" rx="2" fill="#E08A1E"/>
-<rect x="675" y="273" width="262" height="56" rx="0" fill="#FDF3E6"/>
-<text x="692" y="295" font-size="10.5" font-weight="700" fill="#E08A1E" text-anchor="start" letter-spacing="1.2">EXECUTION</text>
-<text x="692" y="317" font-size="18" font-weight="700" fill="#1F2328" text-anchor="start">Builder</text>
-<text x="692" y="352" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">Claude Code + Blender MCP</text>
-<circle cx="696" cy="376" r="2.6" fill="#E08A1E"/>
-<text x="707" y="380" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Diagnoses with evidence</text>
-<circle cx="696" cy="400" r="2.6" fill="#E08A1E"/>
-<text x="707" y="404" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Measures, models, exports</text>
-<circle cx="696" cy="424" r="2.6" fill="#E08A1E"/>
-<text x="707" y="428" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Compares game vs reference</text>
-<circle cx="696" cy="448" r="2.6" fill="#E08A1E"/>
-<text x="707" y="452" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">A/B: keeps or reverts</text>
+<rect x="40" y="518" width="4" height="84" rx="2" fill="#6366F1"/>
+<rect x="54" y="530" width="30" height="20" rx="6" fill="#EEEFFE"/>
+<text x="69" y="544.5" font-size="11" font-weight="700" fill="#6366F1" text-anchor="middle">1c</text>
+<text x="94" y="545" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Open and inspect every image</text>
+<text x="94" y="565" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">screenshot + zoom on details</text>
+<text x="94" y="582" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">rejects aftermarket parts, wrong market or generation</text>
 <g filter="url(#shadow)">
-<rect x="980" y="268" width="264" height="232" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+<rect x="40" y="616" width="398" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
 </g>
-<rect x="980" y="268" width="264" height="5" rx="2" fill="#22A55B"/>
-<rect x="981" y="273" width="262" height="56" rx="0" fill="#E8F6EE"/>
-<text x="998" y="295" font-size="10.5" font-weight="700" fill="#22A55B" text-anchor="start" letter-spacing="1.2">GROUND TRUTH</text>
-<text x="998" y="317" font-size="18" font-weight="700" fill="#1F2328" text-anchor="start">Game</text>
-<text x="998" y="352" font-size="12" font-weight="500" fill="#59636E" text-anchor="start">ETS2 / ATS · Prism3D engine</text>
-<circle cx="1002" cy="376" r="2.6" fill="#22A55B"/>
-<text x="1013" y="380" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Loads the exported mod</text>
-<circle cx="1002" cy="400" r="2.6" fill="#22A55B"/>
-<text x="1013" y="404" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Renders views V1–V5</text>
-<circle cx="1002" cy="424" r="2.6" fill="#22A55B"/>
-<text x="1013" y="428" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">Logs driving telemetry</text>
-<circle cx="1002" cy="448" r="2.6" fill="#22A55B"/>
-<text x="1013" y="452" font-size="12.5" font-weight="400" fill="#1F2328" text-anchor="start">The only acceptance judge</text>
-<path d="M330,386 L362,386" fill="none" stroke="#57606A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<circle cx="347.0" cy="366" r="11" fill="#0E9F8E"/>
-<text x="347.0" y="370.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
-<path d="M636,386 L668,386" fill="none" stroke="#57606A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<circle cx="653.0" cy="366" r="11" fill="#6366F1"/>
-<text x="653.0" y="370.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
-<path d="M942,386 L974,386" fill="none" stroke="#57606A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<circle cx="959.0" cy="366" r="11" fill="#E08A1E"/>
-<text x="959.0" y="370.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
-<path d="M500.0,218 L500.0,262" fill="none" stroke="#57606A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<circle cx="520.0" cy="243" r="11" fill="#8B5CF6"/>
-<text x="520.0" y="247.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
-<path d="M734,218 C734,240 592,236 592,262" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
-<path d="M806.0,218 L806.0,262" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
-<path d="M194.0,218 L194.0,262" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
-<path d="M1112.0,262 L1112.0,222" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
-<path d="M1112.0,504 L1112.0,536 Q1112.0,544 1104.0,544 L202.0,544 Q194.0,544 194.0,536 L194.0,508" fill="none" stroke="#22A55B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<circle cx="773.0" cy="544" r="11" fill="#22A55B"/>
-<text x="773.0" y="548.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
-<text x="791.0" y="540" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">views V1–V5 on screen</text>
-<path d="M234.0,508 L234.0,522 Q234.0,528 240.0,528 L760.0,528 Q766.0,528 766.0,522 L766.0,508" fill="none" stroke="#0E9F8E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<circle cx="344.0" cy="528" r="11" fill="#0E9F8E"/>
-<text x="344.0" y="532.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
-<text x="362.0" y="524" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">F12 screenshots</text>
-<path d="M970,448 A13,13 0 1 1 957,435" fill="none" stroke="#E08A1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
-<circle cx="957" cy="478" r="11" fill="#E08A1E"/>
-<text x="957" y="482.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
-<rect x="62" y="590" width="132.5" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="76" cy="604" r="4" fill="#0E9F8E"/>
-<text x="87" y="608.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Bug screenshots</text>
-<rect x="62" y="624" width="172.70000000000002" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="76" cy="638" r="4" fill="#0E9F8E"/>
-<text x="87" y="642.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Plain-words complaint</text>
-<rect x="62" y="658" width="159.3" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="76" cy="672" r="4" fill="#0E9F8E"/>
-<text x="87" y="676.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">In-game views V1–V5</text>
-<rect x="62" y="692" width="166.0" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="76" cy="706" r="4" fill="#0E9F8E"/>
-<text x="87" y="710.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Owner&#x27;s measurements</text>
-<rect x="368" y="590" width="132.5" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="382" cy="604" r="4" fill="#6366F1"/>
-<text x="393" y="608.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Reference table</text>
-<rect x="368" y="624" width="112.4" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="382" cy="638" r="4" fill="#6366F1"/>
-<text x="393" y="642.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Round prompt</text>
-<rect x="368" y="658" width="152.60000000000002" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="382" cy="672" r="4" fill="#6366F1"/>
-<text x="393" y="676.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Engine-truth notes</text>
-<rect x="674" y="590" width="132.5" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="688" cy="604" r="4" fill="#E08A1E"/>
-<text x="699" y="608.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">CLAUDE.md rules</text>
-<rect x="674" y="624" width="139.2" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="688" cy="638" r="4" fill="#E08A1E"/>
-<text x="699" y="642.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Diagnostic build</text>
-<rect x="674" y="658" width="112.4" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="688" cy="672" r="4" fill="#E08A1E"/>
-<text x="699" y="676.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Measurements</text>
-<rect x="674" y="692" width="132.5" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="688" cy="706" r="4" fill="#E08A1E"/>
-<text x="699" y="710.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">A/B comparisons</text>
-<rect x="674" y="726" width="112.4" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="688" cy="740" r="4" fill="#E08A1E"/>
-<text x="699" y="744.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Round report</text>
-<rect x="980" y="590" width="112.4" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="994" cy="604" r="4" fill="#22A55B"/>
-<text x="1005" y="608.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Exported mod</text>
-<rect x="980" y="624" width="119.10000000000001" height="28" rx="14" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="994" cy="638" r="4" fill="#22A55B"/>
-<text x="1005" y="642.5" font-size="11.5" font-weight="500" fill="#1F2328" text-anchor="start">Telemetry CSV</text>
-<rect x="24" y="788" width="1232" height="88" rx="12" fill="#F6F8FA" stroke="#D0D7DE" stroke-width="1"/>
-<circle cx="59" cy="810" r="11" fill="#0E9F8E"/>
-<text x="59" y="814.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
-<text x="78" y="815" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Modder reports defects with screenshots</text>
-<circle cx="364" cy="810" r="11" fill="#8B5CF6"/>
-<text x="364" y="814.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
-<text x="383" y="815" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Director gathers &amp; inspects references</text>
-<circle cx="669" cy="810" r="11" fill="#6366F1"/>
-<text x="669" y="814.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
-<text x="688" y="815" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Director hands over one round prompt</text>
-<circle cx="974" cy="810" r="11" fill="#E08A1E"/>
-<text x="974" y="814.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
-<text x="993" y="815" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Builder diagnoses, builds, exports the mod</text>
-<circle cx="59" cy="844" r="11" fill="#22A55B"/>
-<text x="59" y="848.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
-<text x="78" y="849" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Game renders the agreed views V1–V5</text>
-<circle cx="364" cy="844" r="11" fill="#0E9F8E"/>
-<text x="364" y="848.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
-<text x="383" y="849" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Modder sends F12 screenshots back</text>
-<circle cx="669" cy="844" r="11" fill="#E08A1E"/>
-<text x="669" y="848.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
-<text x="688" y="849" font-size="12" font-weight="400" fill="#1F2328" text-anchor="start">Builder compares, iterates or reverts</text>
-<text x="993" y="849" font-size="12" font-weight="400" fill="#59636E" text-anchor="start" font-style="italic">Dashed: consulted sources</text>
+<rect x="40" y="616" width="4" height="84" rx="2" fill="#6366F1"/>
+<rect x="54" y="628" width="30" height="20" rx="6" fill="#EEEFFE"/>
+<text x="69" y="642.5" font-size="11" font-weight="700" fill="#6366F1" text-anchor="middle">1d</text>
+<text x="94" y="643" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Check numbers and engine rules</text>
+<text x="94" y="663" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">dimensions, tyre size, road-test data</text>
+<text x="94" y="680" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">SCS Wiki: what Prism3D can actually do</text>
+<g filter="url(#shadow)">
+<rect x="40" y="714" width="398" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+</g>
+<rect x="40" y="714" width="4" height="84" rx="2" fill="#6366F1"/>
+<rect x="54" y="726" width="30" height="20" rx="6" fill="#EEEFFE"/>
+<text x="69" y="740.5" font-size="11" font-weight="700" fill="#6366F1" text-anchor="middle">1e</text>
+<text x="94" y="741" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Write round-prompt.md</text>
+<text x="94" y="761" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">table of reference URLs + caveats</text>
+<text x="94" y="778" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">per defect: now · real · diagnose · build · accept</text>
+<g filter="url(#shadow)">
+<rect x="504" y="322" width="388" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+</g>
+<rect x="504" y="322" width="4" height="84" rx="2" fill="#E08A1E"/>
+<rect x="518" y="334" width="30" height="20" rx="6" fill="#FDF3E6"/>
+<text x="533" y="348.5" font-size="11" font-weight="700" fill="#E08A1E" text-anchor="middle">2a</text>
+<text x="558" y="349" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Load the rules, download refs</text>
+<text x="558" y="369" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">CLAUDE.md: engine truth, evidence rules</text>
+<text x="558" y="386" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">curl the reference URLs into refs/, opens them</text>
+<g filter="url(#shadow)">
+<rect x="504" y="420" width="388" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+</g>
+<rect x="504" y="420" width="4" height="84" rx="2" fill="#E08A1E"/>
+<rect x="518" y="432" width="30" height="20" rx="6" fill="#FDF3E6"/>
+<text x="533" y="446.5" font-size="11" font-weight="700" fill="#E08A1E" text-anchor="middle">2b</text>
+<text x="558" y="447" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Measure and diagnose</text>
+<text x="558" y="467" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">photo_measure.py, mesh_audit.py</text>
+<text x="558" y="484" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">colour-tagged test build when unclear</text>
+<g filter="url(#shadow)">
+<rect x="504" y="518" width="388" height="182" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+</g>
+<rect x="504" y="518" width="4" height="182" rx="2" fill="#E08A1E"/>
+<rect x="518" y="530" width="30" height="20" rx="6" fill="#FDF3E6"/>
+<text x="533" y="544.5" font-size="11" font-weight="700" fill="#E08A1E" text-anchor="middle">2c</text>
+<text x="558" y="545" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Model in Blender through MCP</text>
+<rect x="558" y="562" width="318" height="34" rx="8" fill="#FDF3E6" stroke="#D0D7DE" stroke-width="1"/>
+<text x="570" y="583.5" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Claude Code</text>
+<text x="866" y="583.5" font-size="11" font-weight="400" fill="#59636E" text-anchor="end">sends bpy code</text>
+<path d="M594,597 L594,605" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M608,605 L608,597" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="558" y="606" width="318" height="34" rx="8" fill="#FDF3E6" stroke="#D0D7DE" stroke-width="1"/>
+<text x="570" y="627.5" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Blender MCP server</text>
+<text x="866" y="627.5" font-size="11" font-weight="400" fill="#59636E" text-anchor="end">local socket</text>
+<path d="M594,641 L594,649" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M608,649 L608,641" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="558" y="650" width="318" height="34" rx="8" fill="#FDF3E6" stroke="#D0D7DE" stroke-width="1"/>
+<text x="570" y="671.5" font-size="12.5" font-weight="700" fill="#1F2328" text-anchor="start">Blender + SCS Blender Tools</text>
+<text x="866" y="671.5" font-size="11" font-weight="400" fill="#59636E" text-anchor="end">scene · export</text>
+<g filter="url(#shadow)">
+<rect x="504" y="714" width="388" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+</g>
+<rect x="504" y="714" width="4" height="84" rx="2" fill="#E08A1E"/>
+<rect x="518" y="726" width="30" height="20" rx="6" fill="#FDF3E6"/>
+<text x="533" y="740.5" font-size="11" font-weight="700" fill="#E08A1E" text-anchor="middle">2d</text>
+<text x="558" y="741" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Export the mod</text>
+<text x="558" y="761" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">.pim / .pmd / .tobj / .dds + .sii definitions</text>
+<text x="558" y="778" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">packed into the mod folder or .scs</text>
+<g filter="url(#shadow)">
+<rect x="958" y="322" width="282" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+</g>
+<rect x="958" y="322" width="4" height="84" rx="2" fill="#22A55B"/>
+<rect x="972" y="334" width="30" height="20" rx="6" fill="#E8F6EE"/>
+<text x="987" y="348.5" font-size="11" font-weight="700" fill="#22A55B" text-anchor="middle">3a</text>
+<text x="1012" y="349" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Load the mod</text>
+<text x="1012" y="369" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">in your profile, restart</text>
+<text x="1012" y="386" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">the game if needed</text>
+<g filter="url(#shadow)">
+<rect x="958" y="420" width="282" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+</g>
+<rect x="958" y="420" width="4" height="84" rx="2" fill="#22A55B"/>
+<rect x="972" y="432" width="30" height="20" rx="6" fill="#E8F6EE"/>
+<text x="987" y="446.5" font-size="11" font-weight="700" fill="#22A55B" text-anchor="middle">3b</text>
+<text x="1012" y="447" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">You take views V1–V5</text>
+<text x="1012" y="467" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">same head position</text>
+<text x="1012" y="484" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">F12 = screenshot</text>
+<g filter="url(#shadow)">
+<rect x="958" y="518" width="282" height="84" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+</g>
+<rect x="958" y="518" width="4" height="84" rx="2" fill="#22A55B"/>
+<rect x="972" y="530" width="30" height="20" rx="6" fill="#E8F6EE"/>
+<text x="987" y="544.5" font-size="11" font-weight="700" fill="#22A55B" text-anchor="middle">3c</text>
+<text x="1012" y="545" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Screenshots folder</text>
+<text x="1012" y="565" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">Documents/Euro Truck</text>
+<text x="1012" y="582" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">Simulator 2/screenshot/</text>
+<g filter="url(#shadow)">
+<rect x="958" y="616" width="282" height="182" rx="10" fill="#FFFFFF" stroke="#D0D7DE" stroke-width="1"/>
+</g>
+<rect x="958" y="616" width="4" height="182" rx="2" fill="#22A55B"/>
+<rect x="972" y="628" width="30" height="20" rx="6" fill="#E8F6EE"/>
+<text x="987" y="642.5" font-size="11" font-weight="700" fill="#22A55B" text-anchor="middle">3d</text>
+<text x="1012" y="643" font-size="14" font-weight="700" fill="#1F2328" text-anchor="start">Compare with the photo</text>
+<text x="1012" y="663" font-size="11.8" font-weight="400" fill="#59636E" text-anchor="start">side by side, same framing</text>
+<rect x="974" y="682" width="250" height="44" rx="8" fill="#E8F6EE" stroke="#22A55B" stroke-width="1"/>
+<text x="988" y="701" font-size="12.5" font-weight="700" fill="#22A55B" text-anchor="start">✓  matches the reference</text>
+<text x="988" y="717" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">keep it, next defect</text>
+<rect x="974" y="736" width="250" height="44" rx="8" fill="#FDF3E6" stroke="#E08A1E" stroke-width="1"/>
+<text x="988" y="755" font-size="12.5" font-weight="700" fill="#E08A1E" text-anchor="start">✗  differs or got worse</text>
+<text x="988" y="771" font-size="11.5" font-weight="400" fill="#59636E" text-anchor="start">iterate in step 2, or revert</text>
+<path d="M70,408 L70,416" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M70,506 L70,514" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M70,604 L70,612" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M70,702 L70,710" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M534,408 L534,416" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M534,506 L534,514" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M534,702 L534,710" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M988,408 L988,416" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M988,506 L988,514" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M988,604 L988,612" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M239.0,190 L239.0,218" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M758.0,190 L758.0,218" fill="none" stroke="#E08A1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+<path d="M440,756 L463.0,756 Q471.0,756 471.0,748 L471.0,372 Q471.0,364 479.0,364 L498,364" fill="none" stroke="#6366F1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g transform="rotate(-90 471.0 560.0)">
+<rect x="352.8" y="548.0" width="236.4" height="24" rx="12" fill="#FFFFFF" stroke="#6366F1" stroke-width="1"/>
+<text x="471.0" y="564.0" font-size="11" font-weight="700" fill="#6366F1" text-anchor="middle">round-prompt.md + reference URLs</text>
+</g>
+<path d="M894,756 L917.0,756 Q925.0,756 925.0,748 L925.0,372 Q925.0,364 933.0,364 L952,364" fill="none" stroke="#E08A1E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g transform="rotate(-90 925.0 560.0)">
+<rect x="853.7" y="548.0" width="142.60000000000002" height="24" rx="12" fill="#FFFFFF" stroke="#E08A1E" stroke-width="1"/>
+<text x="925.0" y="564.0" font-size="11" font-weight="700" fill="#E08A1E" text-anchor="middle">exported mod files</text>
+</g>
+<path d="M1099.0,824 L1099.0,846 Q1099.0,856 1089.0,856 L708.0,856 Q698.0,856 698.0,846 L698.0,828" fill="none" stroke="#22A55B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="715.65" y="841" width="365.7" height="24" rx="12" fill="#FFFFFF" stroke="#22A55B" stroke-width="1"/>
+<text x="898.5" y="857.5" font-size="11.5" font-weight="600" fill="#22A55B" text-anchor="middle">F12 screenshots → Claude Code compares and iterates</text>
+<path d="M1159.0,824 L1159.0,904 Q1159.0,914 1149.0,914 L249.0,914 Q239.0,914 239.0,904 L239.0,828" fill="none" stroke="#0E9F8E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="465.85" y="899" width="486.3" height="24" rx="12" fill="#FFFFFF" stroke="#0E9F8E" stroke-width="1"/>
+<text x="709.0" y="915.5" font-size="11.5" font-weight="600" fill="#0E9F8E" text-anchor="middle">You → Claude: new screenshots + “what still looks wrong” = next round</text>
+<text x="40" y="968" font-size="12" font-weight="400" fill="#59636E" text-anchor="start">Inner loop (green): runs many times inside one round until the in-game view matches the photo.   Outer loop (teal): one turn per round.</text>
 </svg>

@@ -3,16 +3,22 @@
 A **round** is one cycle from "this looks wrong" to "accepted in game". Keep rounds small: 3–6 defects. Big rounds dilute attention and make it hard to tell which change broke what.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/round-loop-dark.svg">
-  <img alt="The nine stages of one round" src="assets/round-loop-light.svg" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/architecture-dark.svg">
+  <img alt="Architecture: research and prompt in Claude in Chrome, build in Claude Code + Blender MCP, verify in ETS2" src="assets/architecture-light.svg" width="100%">
 </picture>
 
-Stages 1–5 belong to the Modder and the Director and produce **one round prompt**. Stages 6–8 are the Builder's loop with the game: diagnose, build, verify, and back to diagnose (or revert) until the in-game views match the references. Stage 9 closes the round with the acceptance checklist.
+| Stages | Who | Diagram steps |
+|---|---|---|
+| 1 Capture | you | input to ① |
+| 2 Triage · 3 References · 4 Engine truth · 5 Round prompt | Claude + Claude in Chrome | 1a → 1e |
+| 6 Diagnose · 7 Build | Claude Code + Blender MCP | 2a → 2d |
+| 8 Verify in game | you + Claude Code | 3a → 3d, inner loop |
+| 9 Report & close | Claude Code → you | outer loop |
 
 ## Stage 0: Standing setup (once per project)
 
 - Copy [`templates/CLAUDE.md`](../templates/CLAUDE.md) into the mod project root and adapt it (game, vehicle, paths).
-- Extract vanilla data (`def.scs`, `base.scs`, DLC archives) with the SCS extractor into a read-only folder the Builder can search.
+- Extract vanilla data (`def.scs`, `base.scs`, DLC archives) with the SCS extractor into a read-only folder Claude Code can search.
 - Define your **standard views** V1–V5 (see [06](06-verification.md)) and write them in `CLAUDE.md`.
 - Create `refs/`, `renders/`, `tools/`, `OLD_*` collections in the `.blend`.
 
@@ -21,7 +27,7 @@ Stages 1–5 belong to the Modder and the Director and produce **one round promp
 - Play. When something looks wrong, take an F12 screenshot from a standard view if possible.
 - Write one line per defect, in your own words. Emotion is fine; specificity is gold: "the black covers half of the side window when I look left".
 
-## Stage 2: Triage (Director)
+## Stage 2: Triage (Claude in Chrome)
 
 For each defect write three things:
 
@@ -31,19 +37,19 @@ For each defect write three things:
 
 Also look for **defects the modder didn't mention but will notice next** (white door handle, ghost frame) and add them as small items or a "bonus" section.
 
-## Stage 3: References (Director)
+## Stage 3: References (Claude in Chrome)
 
 See [03](03-references.md). Output: a reference table where every link has been **opened and looked at**, with a note on what it shows and its caveats ("India-spec: ignore the camera under the mirror").
 
-## Stage 4: Engine-truth check (Director)
+## Stage 4: Engine-truth check (Claude in Chrome)
 
-See [05](05-prism3d-constraints.md). For every requirement ask: *how does Prism3D do this?* Link the wiki page or name the vanilla pattern. If unknown, the prompt tells the Builder to find out first and report before building.
+See [05](05-prism3d-constraints.md). For every requirement ask: *how does Prism3D do this?* Link the wiki page or name the vanilla pattern. If unknown, the prompt tells Claude Code to find out first and report before building.
 
-## Stage 5: Round prompt (Director)
+## Stage 5: Round prompt (Claude in Chrome)
 
 See [04](04-round-prompts.md). One Markdown file, numbered sections, one section per defect, each with *now / real / steps / acceptance*.
 
-## Stage 6: Diagnose (Builder)
+## Stage 6: Diagnose (Claude Code)
 
 Before changing anything:
 
@@ -51,17 +57,17 @@ Before changing anything:
 - If it is unclear which file or mesh produces a visible defect, make a **colour-tagged diagnostic build** (see [06](06-verification.md)).
 - Write the diagnosis down. "Cause: interior mirror slot camera faces +Z (forward)" beats "fixed mirror".
 
-## Stage 7: Build (Builder)
+## Stage 7: Build (Claude Code)
 
 - Measure from references with tools; model from contours, not from memory.
 - Keep old parts in an `OLD_vN` collection; never delete history mid-round.
 - Export with SCS Blender Tools; follow vanilla patterns for `.sii`.
 
-## Stage 8: Verify in game (Builder ↔ Modder)
+## Stage 8: Verify in game (Claude Code ↔ Modder)
 
-- The Builder asks for **named views** ("V2 and V3, daytime").
-- The modder sends the screenshots (or the Builder reads the game's screenshot folder if it has access).
-- The Builder places each screenshot next to its reference, lists the differences and iterates.
+- Claude Code asks for **named views** ("V2 and V3, daytime").
+- The modder sends the screenshots (or Claude Code reads the game's screenshot folder if it has access).
+- Claude Code places each screenshot next to its reference, lists the differences and iterates.
 - **A/B rule**: if "after" is not clearly closer to the reference than "before", revert.
 
 ## Stage 9: Report and close

@@ -89,247 +89,241 @@ def save(name, theme, svg):
     return path
 
 
-# ---------------------------------------------------------------- overview
-CW = 264                    # card width
-COLS = [32, 32 + CW + 42, 32 + 2 * (CW + 42), 32 + 3 * (CW + 42)]  # x of the four role columns (cards at +30)
-
-
-def role_card(s, x, y, w, h, role, kicker, title, tool, bullets):
+# ---------------------------------------------------------------- shared pieces
+def step(s, x, y, w, h, code, title, lines, role):
     accent, fill = tint(role, s.theme)
     s.add('<g filter="url(#shadow)">')
-    s.rect(x, y, w, h, s.t["bg"], stroke=s.t["border"], r=14)
+    s.rect(x, y, w, h, s.t["bg"], stroke=s.t["border"], r=10)
     s.add("</g>")
-    s.rect(x, y, w, 5, accent, r=2)
-    s.rect(x + 1, y + 5, w - 2, 56, fill, r=0)
-    s.text(x + 18, y + 27, kicker.upper(), size=10.5, weight=700, fill=accent, ls=1.2)
-    s.text(x + 18, y + 49, title, size=18, weight=700)
-    s.text(x + 18, y + 84, tool, size=12, weight=500, fill=s.t["muted"])
-    for i, b in enumerate(bullets):
-        yy = y + 112 + i * 24
-        s.add(f'<circle cx="{x + 22}" cy="{yy - 4}" r="2.6" fill="{accent}"/>')
-        s.text(x + 33, yy, b, size=12.5)
-
-
-def truth_card(s, x, y, w, h, title, lines):
-    accent, fill = tint("truth", s.theme)
-    s.rect(x, y, w, h, fill, stroke=s.t["border"], r=12)
     s.rect(x, y, 4, h, accent, r=2)
-    s.text(x + 16, y + 25, title, size=13.5, weight=700)
+    s.rect(x + 14, y + 12, 30, 20, fill, r=6)
+    s.text(x + 29, y + 26.5, code, size=11, weight=700, fill=accent, anchor="middle")
+    s.text(x + 54, y + 27, title, size=14, weight=700)
     for i, l in enumerate(lines):
-        s.text(x + 16, y + 46 + i * 18, l, size=11.5, fill=s.t["muted"])
+        s.text(x + 54, y + 47 + i * 17, l, size=11.8, fill=s.t["muted"])
 
 
-def chip(s, x, y, label, role):
-    accent, _ = tint(role, s.theme)
-    w = 18 + len(label) * 6.7 + 14
-    s.rect(x, y, w, 28, s.t["chip"], stroke=s.t["border"], r=14)
-    s.add(f'<circle cx="{x + 14}" cy="{y + 14}" r="4" fill="{accent}"/>')
-    s.text(x + 25, y + 18.5, label, size=11.5, weight=500)
+def zone(s, x, y, w, h, num, kicker, title, subtitle, role):
+    accent, fill = tint(role, s.theme)
+    s.rect(x, y, w, h, fill, stroke=s.t["border"], r=16)
+    s.rect(x, y, w, 6, accent, r=3)
+    s.badge(x + 26, y + 34, num, accent)
+    s.text(x + 46, y + 31, kicker.upper(), size=10.5, weight=700, fill=accent, ls=1.3)
+    s.text(x + 46, y + 53, title, size=19, weight=700)
+    s.text(x + 18, y + 80, subtitle, size=12, weight=500, fill=s.t["muted"])
+
+
+def pill(s, x, y, label, color, w=None):
+    w = w or (len(label) * 6.6 + 30)
+    s.rect(x, y, w, 26, s.t["chip"], stroke=s.t["border"], r=13)
+    s.add(f'<circle cx="{x + 13}" cy="{y + 13}" r="4" fill="{color}"/>')
+    s.text(x + 23, y + 17.5, label, size=11.5, weight=500)
     return w
 
 
-def lane(s, y, h, label):
-    s.rect(24, y, s.w - 48, h, s.t["lane"], r=12)
-    s.add(f'<text x="38" y="{y + h / 2}" font-size="10" font-weight="700" fill="{s.t["lane_text"]}" '
-          f'letter-spacing="2" text-anchor="middle" transform="rotate(-90 38 {y + h / 2})">{label}</text>')
+def label_box(s, cx, y, text, color, size=12):
+    w = len(text) * 6.7 + 24
+    s.rect(cx - w / 2, y - 15, w, 24, s.t["bg"], stroke=color, r=12)
+    s.text(cx, y + 1.5, text, size=size, weight=600, fill=color, anchor="middle")
 
 
-def overview(theme):
-    s = Svg(1280, 900, theme, "scs-mod-forge architecture: roles, sources of truth, artifacts and the verification loop")
+# ---------------------------------------------------------------- pipeline (main architecture)
+def pipeline(theme):
+    s = Svg(1280, 1010, theme,
+            "scs-mod-forge architecture: Claude in Chrome researches real references and writes the prompt, "
+            "Claude Code builds in Blender through MCP, ETS2 verifies")
     t = s.t
-    s.text(56, 50, "scs-mod-forge", size=13, weight=700, fill=t["muted"], ls=0.5)
-    s.text(56, 78, "Architecture: four roles, one loop, the game as the judge", size=22, weight=700)
+    R, B, G, Y, P = (ROLE["director"][0], ROLE["builder"][0], ROLE["game"][0], ROLE["modder"][0], ROLE["truth"][0])
+    s.text(40, 46, "scs-mod-forge", size=13, weight=700, fill=t["muted"], ls=0.5)
+    s.text(40, 74, "Research in the browser → build in Blender → verify in the game", size=22, weight=700)
 
-    # lanes
-    lane(s, 104, 128, "TRUTH")
-    lane(s, 252, 300, "ROLES")
-    lane(s, 572, 196, "ARTIFACTS")
+    # sources band
+    s.rect(24, 96, 1232, 92, t["panel"], stroke=t["border"], r=14)
+    s.text(40, 120, "SOURCES", size=10.5, weight=700, fill=t["lane_text"], ls=1.5)
+    s.text(40, 138, "the web, opened in Chrome", size=11.5, fill=t["muted"])
+    x = 214
+    for lab in ("Bing / Google Images", "OEM & dealer galleries", "Owner's manuals", "Review galleries",
+                "Owner forums", "Road tests (e.g. ADAC)"):
+        x += pill(s, x, 110, lab, P) + 8
+    s.text(40, 168, "documentation & files", size=11.5, fill=t["muted"])
+    x = 214
+    for lab in ("SCS Modding Wiki", "SCS Blender Tools docs"):
+        x += pill(s, x, 152, lab, R) + 8
+    x += 24
+    for lab in ("Vanilla game files (extracted)", "Your real car"):
+        x += pill(s, x, 152, lab, B if "Vanilla" in lab else Y) + 8
 
-    # truth cards
-    truth_card(s, COLS[0] + 30, 118, CW, 100, "Real vehicle",
-               ["tyre size, rpm at speed, colours", "owner's photos & measurements", "highest authority"])
-    truth_card(s, COLS[1] + 30, 118, CW, 100, "Real-world references",
-               ["OEM press, owner's manual diagrams", "road tests with measurements", "close-ups, night & in-use photos"])
-    truth_card(s, COLS[2] + 30, 118, CW, 100, "Engine truth",
-               ["SCS Modding Wiki", "vanilla game files (patterns)", "SCS Blender Tools docs"])
-    truth_card(s, COLS[3] + 30, 118, CW, 100, "Measured behaviour",
-               ["in-game screenshots (F12)", "telemetry CSV (speed vs time)", "what actually renders & drives"])
+    # zones
+    zy, zh = 222, 600
+    Z1, Z2, Z3 = (24, 430), (488, 420), (942, 314)
+    zone(s, Z1[0], zy, Z1[1], zh, 1, "Research & prompt", "Claude + Claude in Chrome",
+         "claude.ai + the Chrome extension: browses, views images, searches", "director")
+    zone(s, Z2[0], zy, Z2[1], zh, 2, "Build", "Claude Code + Blender MCP",
+         "in your mod project folder, connected to a running Blender", "builder")
+    zone(s, Z3[0], zy, Z3[1], zh, 3, "Verify", "ETS2 / ATS",
+         "Prism3D engine: the only judge", "game")
 
-    # role cards
-    y0, h0 = 268, 232
-    role_card(s, COLS[0] + 30, y0, CW, h0, "modder", "Owner · QA", "Modder", "human, plays the game",
-              ["Reports defects in plain words", "Takes the requested F12 views", "Confirms specs on the real car",
-               "Accepts or rejects a round"])
-    role_card(s, COLS[1] + 30, y0, CW, h0, "director", "Research · Direction", "Director",
-              "chat assistant + web + browser",
-              ["Triages each screenshot", "Finds & inspects references", "Checks what Prism3D supports",
-               "Writes the round prompt"])
-    role_card(s, COLS[2] + 30, y0, CW, h0, "builder", "Execution", "Builder",
-              "Claude Code + Blender MCP",
-              ["Diagnoses with evidence", "Measures, models, exports", "Compares game vs reference",
-               "A/B: keeps or reverts"])
-    role_card(s, COLS[3] + 30, y0, CW, h0, "game", "Ground truth", "Game",
-              "ETS2 / ATS · Prism3D engine",
-              ["Loads the exported mod", "Renders views V1–V5", "Logs driving telemetry",
-               "The only acceptance judge"])
+    sx, sw = Z1[0] + 16, Z1[1] - 32
+    ys = [zy + 100 + i * 98 for i in range(5)]
+    step(s, sx, ys[0], sw, 84, "1a", "Read your screenshots",
+         ["names each defect precisely", "ranks the likely causes (normals, culling, IDs…)"], "director")
+    step(s, sx, ys[1], sw, 84, "1b", "Hunt real photos in Chrome",
+         ["image search, OEM / review galleries, forums", "pulls the direct image URLs from result pages"], "director")
+    step(s, sx, ys[2], sw, 84, "1c", "Open and inspect every image",
+         ["screenshot + zoom on details", "rejects aftermarket parts, wrong market or generation"], "director")
+    step(s, sx, ys[3], sw, 84, "1d", "Check numbers and engine rules",
+         ["dimensions, tyre size, road-test data", "SCS Wiki: what Prism3D can actually do"], "director")
+    step(s, sx, ys[4], sw, 84, "1e", "Write round-prompt.md",
+         ["table of reference URLs + caveats", "per defect: now · real · diagnose · build · accept"], "director")
 
-    a = t["arrow"]
-    ry = y0 + 118  # role arrows y
-    # 1 modder -> director, 3 director -> builder, 4 builder -> game
-    for i, n in ((0, 1), (1, 3), (2, 4)):
-        x1 = COLS[i] + 30 + CW
-        x2 = COLS[i + 1] + 30
-        s.path(f"M{x1 + 4},{ry} L{x2 - 6},{ry}", a, sw=2)
-        s.badge((x1 + x2) / 2, ry - 20, n, tint(["modder", "director", "builder"][i], theme)[0])
-    # 2 truth -> director (references) and engine truth -> director & builder
-    s.path(f"M{COLS[1] + 30 + CW / 2},{218} L{COLS[1] + 30 + CW / 2},{y0 - 6}", a, sw=2)
-    s.badge(COLS[1] + 30 + CW / 2 + 20, 243, 2, ROLE["truth"][0])
-    s.path(f"M{COLS[2] + 30 + 60},{218} C{COLS[2] + 30 + 60},{240} {COLS[1] + 30 + CW - 40},{236} "
-           f"{COLS[1] + 30 + CW - 40},{y0 - 6}", a, sw=1.6, dash="5 4")
-    s.path(f"M{COLS[2] + 30 + CW / 2},{218} L{COLS[2] + 30 + CW / 2},{y0 - 6}", a, sw=1.6, dash="5 4")
-    s.path(f"M{COLS[0] + 30 + CW / 2},{218} L{COLS[0] + 30 + CW / 2},{y0 - 6}", a, sw=1.6, dash="5 4")
-    s.path(f"M{COLS[3] + 30 + CW / 2},{y0 - 6} L{COLS[3] + 30 + CW / 2},{218 + 4}", a, sw=1.6, dash="5 4")
+    bx, bw = Z2[0] + 16, Z2[1] - 32
+    step(s, bx, ys[0], bw, 84, "2a", "Load the rules, download refs",
+         ["CLAUDE.md: engine truth, evidence rules", "curl the reference URLs into refs/, opens them"], "builder")
+    step(s, bx, ys[1], bw, 84, "2b", "Measure and diagnose",
+         ["photo_measure.py, mesh_audit.py", "colour-tagged test build when unclear"], "builder")
+    # MCP stack inside step 2c
+    y2c = ys[2]
+    s.add('<g filter="url(#shadow)">')
+    s.rect(bx, y2c, bw, 182, t["bg"], stroke=t["border"], r=10)
+    s.add("</g>")
+    s.rect(bx, y2c, 4, 182, B, r=2)
+    accent, fill = tint("builder", theme)
+    s.rect(bx + 14, y2c + 12, 30, 20, fill, r=6)
+    s.text(bx + 29, y2c + 26.5, "2c", size=11, weight=700, fill=accent, anchor="middle")
+    s.text(bx + 54, y2c + 27, "Model in Blender through MCP", size=14, weight=700)
+    names = [("Claude Code", "sends bpy code"), ("Blender MCP server", "local socket"),
+             ("Blender + SCS Blender Tools", "scene \u00b7 export")]
+    for i, (n_, d_) in enumerate(names):
+        yy = y2c + 44 + i * 44
+        s.rect(bx + 54, yy, bw - 70, 34, fill, stroke=t["border"], r=8)
+        s.text(bx + 66, yy + 21.5, n_, size=12.5, weight=700)
+        s.text(bx + bw - 26, yy + 21.5, d_, size=11, fill=t["muted"], anchor="end")
+        if i < 2:
+            s.path(f"M{bx + 90},{yy + 35} L{bx + 90},{yy + 43}", t["arrow"], sw=1.6, marker="arrow")
+            s.path(f"M{bx + 104},{yy + 43} L{bx + 104},{yy + 35}", t["arrow"], sw=1.6, marker="arrow")
+    step(s, bx, ys[4], bw, 84, "2d", "Export the mod",
+         [".pim / .pmd / .tobj / .dds + .sii definitions", "packed into the mod folder or .scs"], "builder")
 
-    # verification loop under the cards
-    yb = y0 + h0  # 500
-    gx = COLS[3] + 30 + CW / 2
-    mx = COLS[0] + 30 + CW / 2
-    bx = COLS[2] + 30 + CW / 2
-    s.path(f"M{gx},{yb + 4} L{gx},{yb + 36} Q{gx},{yb + 44} {gx - 8},{yb + 44} L{mx + 8},{yb + 44} "
-           f"Q{mx},{yb + 44} {mx},{yb + 36} L{mx},{yb + 8}", tint("game", theme)[0], sw=2)
-    s.badge((gx + mx) / 2 + 120, yb + 44, 5, tint("game", theme)[0])
-    s.text((gx + mx) / 2 + 138, yb + 40, "views V1–V5 on screen", size=11.5, fill=t["muted"])
-    s.path(f"M{mx + 40},{yb + 8} L{mx + 40},{yb + 22} Q{mx + 40},{yb + 28} {mx + 46},{yb + 28} "
-           f"L{bx - 46},{yb + 28} Q{bx - 40},{yb + 28} {bx - 40},{yb + 22} L{bx - 40},{yb + 8}",
-           tint("modder", theme)[0], sw=2)
-    s.badge(mx + 150, yb + 28, 6, tint("modder", theme)[0])
-    s.text(mx + 168, yb + 24, "F12 screenshots", size=11.5, fill=t["muted"])
-    # 7: compare / iterate loop, drawn in the gap between Builder and Game
-    lcx, lcy, lr = COLS[3] + 30 - 23, yb - 52, 13
-    bc = tint("builder", theme)[0]
-    s.path(f"M{lcx + lr},{lcy} A{lr},{lr} 0 1 1 {lcx},{lcy - lr}", bc, sw=2)
-    s.badge(lcx, lcy + 30, 7, bc)
-    # artifacts
-    rows = {
-        0: [("Bug screenshots", "modder"), ("Plain-words complaint", "modder"), ("In-game views V1–V5", "modder"),
-            ("Owner's measurements", "modder")],
-        1: [("Reference table", "director"), ("Round prompt", "director"), ("Engine-truth notes", "director")],
-        2: [("CLAUDE.md rules", "builder"), ("Diagnostic build", "builder"), ("Measurements", "builder"),
-            ("A/B comparisons", "builder"), ("Round report", "builder")],
-        3: [("Exported mod", "game"), ("Telemetry CSV", "game")],
-    }
-    for col, items in rows.items():
-        x = COLS[col] + 30
-        y = 590
-        for lab, role in items:
-            chip(s, x, y, lab, role)
-            y += 34
+    gx, gw = Z3[0] + 16, Z3[1] - 32
+    step(s, gx, ys[0], gw, 84, "3a", "Load the mod", ["in your profile, restart", "the game if needed"], "game")
+    step(s, gx, ys[1], gw, 84, "3b", "You take views V1–V5", ["same head position", "F12 = screenshot"], "game")
+    step(s, gx, ys[2], gw, 84, "3c", "Screenshots folder", ["Documents/Euro Truck", "Simulator 2/screenshot/"], "game")
+    # decision
+    dy = ys[3]
+    s.add('<g filter="url(#shadow)">')
+    s.rect(gx, dy, gw, 182, t["bg"], stroke=t["border"], r=10)
+    s.add("</g>")
+    s.rect(gx, dy, 4, 182, G, r=2)
+    afg, ffg = tint("game", theme)
+    s.rect(gx + 14, dy + 12, 30, 20, ffg, r=6)
+    s.text(gx + 29, dy + 26.5, "3d", size=11, weight=700, fill=afg, anchor="middle")
+    s.text(gx + 54, dy + 27, "Compare with the photo", size=14, weight=700)
+    s.text(gx + 54, dy + 47, "side by side, same framing", size=11.8, fill=t["muted"])
+    s.rect(gx + 16, dy + 66, gw - 32, 44, ffg, stroke=G, r=8)
+    s.text(gx + 30, dy + 85, "✓  matches the reference", size=12.5, weight=700, fill=G)
+    s.text(gx + 30, dy + 101, "keep it, next defect", size=11.5, fill=t["muted"])
+    s.rect(gx + 16, dy + 120, gw - 32, 44, fill, stroke=B, r=8)
+    s.text(gx + 30, dy + 139, "✗  differs or got worse", size=12.5, weight=700, fill=B)
+    s.text(gx + 30, dy + 155, "iterate in step 2, or revert", size=11.5, fill=t["muted"])
 
-    # legend
-    ly = 800
-    s.rect(24, ly - 12, s.w - 48, 88, t["panel"], stroke=t["border"], r=12)
-    steps = [
-        (1, "modder", "Modder reports defects with screenshots"),
-        (2, "truth", "Director gathers & inspects references"),
-        (3, "director", "Director hands over one round prompt"),
-        (4, "builder", "Builder diagnoses, builds, exports the mod"),
-        (5, "game", "Game renders the agreed views V1–V5"),
-        (6, "modder", "Modder sends F12 screenshots back"),
-        (7, "builder", "Builder compares, iterates or reverts"),
-    ]
-    for i, (n, role, txt) in enumerate(steps):
-        col, row = i % 4, i // 4
-        x = 48 + col * 305
-        y = ly + 14 + row * 34
-        s.badge(x + 11, y - 4, n, ROLE[role][0])
-        s.text(x + 30, y + 1, txt, size=12)
-    s.text(48 + 3 * 305 + 30, ly + 49, "Dashed: consulted sources", size=12, fill=t["muted"], italic=True)
+    # inner-zone flow arrows
+    for xx, ww in ((sx, sw), (bx, bw), (gx, gw)):
+        pass
+    for i in range(4):
+        cx_ = sx + 30
+        s.path(f"M{cx_},{ys[i] + 86} L{cx_},{ys[i + 1] - 4}", t["arrow"], sw=1.6)
+    for a_, b_ in ((ys[0], ys[1]), (ys[1], ys[2]), (ys[2] + 98, ys[4])):
+        s.path(f"M{bx + 30},{a_ + 86} L{bx + 30},{b_ - 4}", t["arrow"], sw=1.6)
+    for i in range(3):
+        s.path(f"M{gx + 30},{ys[i] + 86} L{gx + 30},{ys[i + 1] - 4}", t["arrow"], sw=1.6)
+
+    # sources -> zone 1 / zone 2
+    s.path(f"M{Z1[0] + Z1[1] / 2},{190} L{Z1[0] + Z1[1] / 2},{zy - 4}", P, sw=2)
+    s.path(f"M{Z2[0] + Z2[1] / 2 + 60},{190} L{Z2[0] + Z2[1] / 2 + 60},{zy - 4}", B, sw=1.6, dash="5 4")
+
+    # zone 1 -> zone 2 (prompt) ; zone 2 -> zone 3 (mod): routed through the gaps, vertical labels
+    def vlabel(cx, cy, text, color):
+        w = len(text) * 6.7 + 22
+        s.add(f'<g transform="rotate(-90 {cx} {cy})">')
+        s.rect(cx - w / 2, cy - 12, w, 24, t["bg"], stroke=color, r=12)
+        s.text(cx, cy + 4, text, size=11, weight=700, fill=color, anchor="middle")
+        s.add("</g>")
+
+    g1 = (Z1[0] + Z1[1] + Z2[0]) / 2
+    y_from, y_to = ys[4] + 42, ys[0] + 42
+    s.path(f"M{sx + sw + 2},{y_from} L{g1 - 8},{y_from} Q{g1},{y_from} {g1},{y_from - 8} "
+           f"L{g1},{y_to + 8} Q{g1},{y_to} {g1 + 8},{y_to} L{bx - 6},{y_to}", R, sw=2.4)
+    vlabel(g1, (y_from + y_to) / 2, "round-prompt.md + reference URLs", R)
+    g2 = (Z2[0] + Z2[1] + Z3[0]) / 2
+    s.path(f"M{bx + bw + 2},{y_from} L{g2 - 8},{y_from} Q{g2},{y_from} {g2},{y_from - 8} "
+           f"L{g2},{y_to + 8} Q{g2},{y_to} {g2 + 8},{y_to} L{gx - 6},{y_to}", B, sw=2.4)
+    vlabel(g2, (y_from + y_to) / 2, "exported mod files", B)
+
+    # feedback loops below the zones
+    yl1 = zy + zh + 34
+    xs3 = Z3[0] + Z3[1] / 2
+    xs2 = Z2[0] + Z2[1] / 2
+    s.path(f"M{xs3},{zy + zh + 2} L{xs3},{yl1 - 10} Q{xs3},{yl1} {xs3 - 10},{yl1} L{xs2 + 10},{yl1} "
+           f"Q{xs2},{yl1} {xs2},{yl1 - 10} L{xs2},{zy + zh + 6}", G, sw=2.4)
+    label_box(s, (xs3 + xs2) / 2, yl1, "F12 screenshots → Claude Code compares and iterates", G, size=11.5)
+    yl2 = yl1 + 58
+    xs1 = Z1[0] + Z1[1] / 2
+    s.path(f"M{xs3 + 60},{zy + zh + 2} L{xs3 + 60},{yl2 - 10} Q{xs3 + 60},{yl2} {xs3 + 50},{yl2} L{xs1 + 10},{yl2} "
+           f"Q{xs1},{yl2} {xs1},{yl2 - 10} L{xs1},{zy + zh + 6}", Y, sw=2.4)
+    label_box(s, (xs3 + xs1) / 2 + 40, yl2, "You → Claude: new screenshots + “what still looks wrong” = next round", Y,
+              size=11.5)
+
+    # footer legend
+    fy = yl2 + 40
+    s.text(40, fy + 14, "Inner loop (green): runs many times inside one round until the in-game view matches the photo.   "
+                        "Outer loop (teal): one turn per round.", size=12, fill=t["muted"])
     return s
 
 
-# ---------------------------------------------------------------- round loop
-OWNER = {"modder": "Modder", "director": "Director", "builder": "Builder", "game": "Game · with Modder",
-         "truth": "Director"}
-
-
-def stage_card(s, x, y, w, h, n, name, role, lines):
-    accent, fill = tint(role, s.theme)
-    s.add('<g filter="url(#shadow)">')
-    s.rect(x, y, w, h, s.t["bg"], stroke=s.t["border"], r=14)
-    s.add("</g>")
-    s.rect(x, y, w, 5, accent, r=2)
-    s.badge(x + 26, y + 32, n, accent)
-    s.text(x + 46, y + 37, name, size=15.5, weight=700)
-    s.text(x + 18, y + 62, OWNER[role].upper(), size=10, weight=700, fill=accent, ls=1.1)
-    for i, l in enumerate(lines):
-        s.text(x + 18, y + 86 + i * 19, l, size=12.5, fill=s.t["muted"])
-
-
-def round_loop(theme):
-    s = Svg(1280, 710, theme, "The round loop: nine stages from screenshot to accepted change")
+# ---------------------------------------------------------------- research detail
+def research(theme):
+    s = Svg(1280, 490, theme, "How Claude in Chrome finds and verifies reference photos")
     t = s.t
-    s.text(56, 50, "scs-mod-forge", size=13, weight=700, fill=t["muted"], ls=0.5)
-    s.text(56, 78, "One round: from \u201cthis looks wrong\u201d to \u201caccepted in game\u201d", size=22, weight=700)
-    W, H, G = 220, 148, 28
-    xs = [40 + i * (W + G) for i in range(5)]
-    y1, y2 = 120, 340
-    row1 = [
-        ("Capture", "modder", ["F12 screenshots of what", "looks wrong + one plain", "line per defect"]),
-        ("Triage", "director", ["observed (neutral)", "likely causes, ranked", "real-world target"]),
-        ("References", "truth", ["find, open, inspect", "rank by source type", "note caveats & scale"]),
-        ("Engine truth", "director", ["how does Prism3D do it?", "cite wiki / vanilla file", "else: ask, then wait"]),
-        ("Round prompt", "director", ["now \u00b7 real \u00b7 diagnose", "build \u00b7 accept", "protect what works"]),
+    R, P, B = ROLE["director"][0], ROLE["truth"][0], ROLE["builder"][0]
+    s.text(40, 46, "scs-mod-forge · step 1 in detail", size=13, weight=700, fill=t["muted"], ls=0.5)
+    s.text(40, 74, "How Claude in Chrome turns “the vents look fake” into verified reference photos", size=22,
+           weight=700)
+    W, H, gap = 220, 206, 20
+    cards = [
+        ("Search", ["image search with precise", "words: model, generation,", "part, view", "", "e.g. “honda civic 10th gen", "center air vent close up”"]),
+        ("Extract URLs", ["script on the results page", "reads each hit’s direct", "image URL + source page", "(query strings stripped)", "", "→ a list, not thumbnails"]),
+        ("Open & look", ["opens every candidate,", "takes a screenshot,", "zooms on the details that", "matter (louvers, labels,", "stitching, lamp layout)", ""]),
+        ("Accept / reject", ["✗ aftermarket parts", "✗ other market / trim", "✗ wrong generation", "✓ OEM, manual, review", "✓ photo of the part", "     in use (lit, driving)"]),
+        ("Reference table", ["id · what it shows ·", "caveats · URL", "", "scale anchors (known", "dimensions) for", "measuring from photos"]),
     ]
-    row2 = [  # placed right-to-left
-        ("Diagnose", "builder", ["mesh audit", "colour-tag build", "raycasts & measurements"]),
-        ("Build", "builder", ["measure \u2192 model", "materials, UVs", "export with SCS tools"]),
-        ("Verify in game", "game", ["views V1\u2013V5 (F12)", "side by side with refs", "A/B: keep or revert"]),
-        ("Report & close", "modder", ["diagnosis, evidence", "open differences", "checklist ticked"]),
+    x = 40
+    for i, (title, lines) in enumerate(cards):
+        accent = R if i != 3 else P
+        a_, f_ = (tint("director", theme) if i != 3 else tint("truth", theme))
+        s.add('<g filter="url(#shadow)">')
+        s.rect(x, 110, W, H, t["bg"], stroke=t["border"], r=12)
+        s.add("</g>")
+        s.rect(x, 110, W, 5, a_, r=2)
+        s.badge(x + 24, 142, i + 1, a_)
+        s.text(x + 44, 147, title, size=15.5, weight=700)
+        for k, l in enumerate(lines):
+            s.text(x + 18, 180 + k * 20, l, size=12.2, fill=t["muted"])
+        if i < len(cards) - 1:
+            s.path(f"M{x + W + 3},{110 + H / 2} L{x + W + gap - 4},{110 + H / 2}", t["arrow"], sw=2)
+        x += W + gap
+    # outputs
+    s.rect(40, 348, 1200, 112, t["panel"], stroke=t["border"], r=12)
+    s.text(60, 376, "What ends up in the prompt for Claude Code", size=14, weight=700)
+    rows = [
+        ("Reference table", "only images that were opened and checked, each with caveats"),
+        ("“Now” vs “real”", "what your screenshot shows vs how the real part looks, citing the image ids"),
+        ("Numbers", "dimensions with sources (e.g. mirror protrusion from width with / without mirrors)"),
     ]
-    for i, (name, role, lines) in enumerate(row1):
-        stage_card(s, xs[i], y1, W, H, i + 1, name, role, lines)
-        if i < 4:
-            s.path(f"M{xs[i] + W + 4},{y1 + H / 2} L{xs[i + 1] - 6},{y1 + H / 2}", t["arrow"], sw=2)
-    for j, (name, role, lines) in enumerate(row2):
-        col = 4 - j
-        stage_card(s, xs[col], y2, W, H, 6 + j, name, role, lines)
-        if j < 3:
-            s.path(f"M{xs[col] - 4},{y2 + H / 2} L{xs[col - 1] + W + 6},{y2 + H / 2}", t["arrow"], sw=2)
-    # 5 -> 6 (down)
-    cx5 = xs[4] + W / 2
-    s.path(f"M{cx5},{y1 + H + 4} L{cx5},{y2 - 6}", t["arrow"], sw=2)
-    # 8 -> 6 feedback (iterate)
-    bc = tint("builder", theme)[0]
-    x8, x6 = xs[2] + W / 2, xs[4] + W / 2
-    s.path(f"M{x8},{y2 + H + 4} C{x8},{y2 + H + 66} {x6},{y2 + H + 66} {x6},{y2 + H + 8}", bc, sw=2, dash="6 5")
-    s.text((x8 + x6) / 2, y2 + H + 76, "not matching the reference \u2192 iterate, or revert", size=12.5,
-           weight=600, fill=bc, anchor="middle")
-    # 9 -> next round (back to 1)
-    x9 = xs[1]
-    cx1 = xs[0] + W / 2
-    mc = tint("modder", theme)[0]
-    s.path(f"M{x9 - 4},{y2 + H / 2} L{cx1 + 10},{y2 + H / 2} Q{cx1},{y2 + H / 2} {cx1},{y2 + H / 2 - 10} "
-           f"L{cx1},{y1 + H + 8}", mc, sw=2)
-    s.text(cx1 + 12, y2 + 20, "next round", size=12.5, weight=600, fill=mc)
-    # rules strip
-    ry = 600
-    s.rect(24, ry, 1232, 84, t["panel"], stroke=t["border"], r=12)
-    s.text(48, ry + 32, "Rules that hold in every round", size=14, weight=700)
-    rules = ["The game is the judge", "No reference, no work", "Measure, don\u2019t eyeball",
-             "A/B or revert", "Two failures \u2192 diagnose, don\u2019t retry", "Never invent engine attributes"]
-    for k, r_ in enumerate(rules):
-        col, row = k % 3, k // 3
-        x = 330 + col * 310
-        y = ry + 32 + row * 26
-        s.add(f'<circle cx="{x}" cy="{y - 4}" r="3" fill="{t["arrow"]}"/>')
-        s.text(x + 12, y, r_, size=13)
-    # role legend (top right)
-    lx = 1232
-    for role, lab in reversed((("modder", "Modder"), ("director", "Director"), ("truth", "References"),
-                               ("builder", "Builder"), ("game", "Game"))):
-        lx -= 22 + len(lab) * 7
-        s.add(f'<circle cx="{lx}" cy="{73}" r="5" fill="{ROLE[role][0]}"/>')
-        s.text(lx + 10, 77.5, lab, size=12, fill=t["muted"])
+    for k, (a, b) in enumerate(rows):
+        yy = 404 + k * 22
+        s.add(f'<circle cx="{66}" cy="{yy - 4}" r="3" fill="{R}"/>')
+        s.text(78, yy, a, size=12.5, weight=700)
+        s.text(240, yy, b, size=12.5, fill=t["muted"])
     return s
 
 
@@ -363,7 +357,7 @@ def truth(theme):
 
 def main():
     for theme in THEMES:
-        for name, fn in (("architecture", overview), ("round-loop", round_loop), ("sources-of-truth", truth)):
+        for name, fn in (("architecture", pipeline), ("research-step", research), ("sources-of-truth", truth)):
             print(save(name, theme, fn(theme)))
 
 

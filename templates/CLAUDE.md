@@ -5,7 +5,8 @@
 - Vehicle: <make, model, year, engine, gearbox, market>.
 - Blender is driven through MCP; export with **SCS Blender Tools**.
 - Vanilla extracted data (read-only): `<path>`.
-- Reference images: `refs/`. Renders and comparisons: `renders/`. Tools: `tools/`.
+- Round prompts come from Claude + Claude in Chrome (research agent) in `round-prompts/`. They contain verified reference URLs: download them with `curl` into `refs/round-NN/` and **open every image** before modeling. If a download is blocked, ask me to save the image.
+- Renders and comparisons: `renders/`. Tools: `tools/`.
 
 ## Engine truth (non-negotiable)
 - **Mods cannot run code.** No scripts, custom shaders or runtime camera logic. Use only: bone animations bound to vehicle values, dashboard UI element IDs, the lamp material + mask system, engine mirror cameras, vanilla `eut2.*` effects, FMOD banks from the SCS template.

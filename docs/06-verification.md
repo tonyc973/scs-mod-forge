@@ -14,11 +14,11 @@ Define fixed views once per project and always use the same head position (defau
 
 Add exterior free-camera views for wheels and lights (front ¾, rear ¾, side profile, wheel at full lock).
 
-## 2. Getting screenshots to the Builder
+## 2. Getting screenshots to Claude Code
 
 - The modder presses **F12** in each requested view.
-- The Builder reads the newest files from the game's screenshot folder (e.g. `Documents/Euro Truck Simulator 2/screenshot/`) if it has access; otherwise the modder sends them.
-- The Builder must **open** the screenshots and compare them. Listing filenames is not verification.
+- Claude Code reads the newest files from the game's screenshot folder (e.g. `Documents/Euro Truck Simulator 2/screenshot/`) if it has access; otherwise the modder sends them.
+- Claude Code must **open** the screenshots and compare them. Listing filenames is not verification.
 
 ## 3. Comparison images
 

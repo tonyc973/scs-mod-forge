@@ -1,22 +1,73 @@
 # scs-mod-forge
 
-**A reference-locked, AI-assisted method for building realistic Euro Truck Simulator 2 / American Truck Simulator mods with Blender.**
+**Build realistic Euro Truck Simulator 2 / American Truck Simulator mods with two Claude agents: one that researches real photos in your browser, one that builds in Blender.**
 
-This repository documents a workflow that was battle-tested while rebuilding a **Honda Civic Sedan 2020 (10th gen, 1.5 VTEC Turbo, 6MT)** interior, exterior and driving physics for ETS2. In that workflow:
+| Step | Who | Does what |
+|---|---|---|
+| **1 · Research & prompt** | **Claude + Claude in Chrome** | Looks at your in-game screenshots, searches the web for **real photos** of the part, opens and inspects each one, checks dimensions and engine rules, and writes a precise **prompt** |
+| **2 · Build** | **Claude Code + Blender MCP** | Reads the prompt, downloads the reference photos, measures them, models the part in **Blender** through MCP and exports the mod |
+| **3 · Verify** | **ETS2 / ATS** | You take screenshots in the game. A change counts only when the screenshot matches the real photo |
 
-- an **AI coding agent** (Claude Code) drives **Blender** through an MCP server;
-- a separate **research/direction assistant** turns screenshots and real-world references into precise, verifiable work orders;
-- **the game is the only judge**: every change is accepted only when an in-game screenshot matches a real photo.
+The method was battle-tested while rebuilding a **Honda Civic Sedan 2020 (10th gen, 1.5 VTEC Turbo, 6MT)** for ETS2: interior, exterior details and driving physics.
 
-It is not a plugin and not a magic button. It is an *architecture for collaboration*: roles, artifacts, loops and rules that keep an AI agent honest and turn "make it look realistic" into a sequence of measurable steps.
+> Not affiliated with or endorsed by SCS Software or Honda. "Euro Truck Simulator 2", "American Truck Simulator", "Prism3D" and vehicle brand names belong to their owners. Reference photos are only **looked at and linked**, never redistributed inside a mod.
 
-> Not affiliated with or endorsed by SCS Software. "Euro Truck Simulator 2", "American Truck Simulator", "Prism3D" and vehicle brand names belong to their owners. Respect copyright: reference photos are for **looking at**, not for redistributing inside your mod.
+---
+
+## Architecture
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/architecture-dark.svg">
+  <img alt="Architecture: sources on the web feed Claude in Chrome (research and prompt), which hands round-prompt.md to Claude Code + Blender MCP (build), which exports the mod to ETS2 (verify). Green inner loop: F12 screenshots back to Claude Code. Teal outer loop: you start the next round with Claude." src="docs/assets/architecture-light.svg" width="100%">
+</picture>
+
+### How to read the diagram
+
+**Top band: sources.** Everything the agents know comes from here. Claude in Chrome opens real web pages (image search, OEM and review galleries, owner's manuals, forums, road tests) and the SCS documentation. Claude Code reads the vanilla game files you extracted. Your own car outranks everything when you can measure it.
+
+**① Research & prompt: Claude + Claude in Chrome.** You give Claude your screenshots and say what looks wrong.
+
+| | |
+|---|---|
+| **1a** | It names each defect precisely and ranks the likely causes |
+| **1b** | It searches for real photos **in your Chrome**, using the browser extension |
+| **1c** | It opens every candidate image and zooms in. It throws out aftermarket parts, other markets and other generations |
+| **1d** | It checks numbers (dimensions, tyre size, measured performance) and what Prism3D can actually do |
+| **1e** | It writes **`round-prompt.md`**: a table of verified photo URLs, plus, for each defect, *what's wrong now · what the real part looks like · how to diagnose · how to build · how to prove it* |
+
+**② Build: Claude Code + Blender MCP.** You paste the prompt into Claude Code, running in your mod project.
+
+| | |
+|---|---|
+| **2a** | It follows the project rules (`CLAUDE.md`) and downloads the photo URLs into `refs/` |
+| **2b** | It measures parts from the photos and diagnoses with scripts instead of guessing |
+| **2c** | It models in Blender through the **Blender MCP server**: Claude Code sends Python (`bpy`) commands to the running Blender |
+| **2d** | It exports with **SCS Blender Tools** into your mod |
+
+**③ Verify: ETS2 / ATS.** You load the mod and take the screenshots Claude Code asks for (fixed views V1–V5, `F12`). Claude Code puts each one **next to the real photo**:
+- if it matches, keep the change;
+- if it differs or got worse, iterate or revert.
+
+**The two loops.**
+- 🟢 **Inner loop:** steps 2 → 3 → 2, many times inside one round, until the game matches the photo.
+- 🔵 **Outer loop:** once per round. You bring new screenshots and "what still looks wrong" back to Claude in Chrome, and the next prompt starts.
+
+Why it's split this way, and where mistakes get caught: **[docs/01-architecture.md](docs/01-architecture.md)**.
+
+### Step ① up close
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/research-step-dark.svg">
+  <img alt="How Claude in Chrome finds reference photos: search, extract URLs, open and look, accept or reject, reference table" src="docs/assets/research-step-light.svg" width="100%">
+</picture>
+
+Playbook with the exact techniques: **[docs/10-research-with-claude-in-chrome.md](docs/10-research-with-claude-in-chrome.md)**. Build-side setup and usage: **[docs/11-build-with-claude-code-and-blender-mcp.md](docs/11-build-with-claude-code-and-blender-mcp.md)**.
 
 ---
 
 ## Why this exists
 
-If you ask an AI agent connected to Blender to "make the interior realistic", you will get something that looks fine in a Blender viewport and wrong in the game. We hit every variant of that failure:
+Ask an AI agent connected to Blender to "make the interior realistic" and you get something that looks fine in the viewport and wrong in the game. We hit every variant of that:
 
 | What the agent said | What the game showed |
 |---|---|
@@ -25,52 +76,22 @@ If you ask an AI agent connected to Blender to "make the interior realistic", yo
 | "Added the windshield frit band" | nothing; the dashboard looked like it was floating |
 | "Cluster layout matches the reference" | range and fuel-economy text drawn on top of the speed |
 
-The fixes were not "better prompts" in general. They were **structural**:
+What fixed it was **structure**, not cleverer wording:
 
-1. **Reference-locked work**: every component has real photos, measured proportions and a written description of what the real part looks like *and* what is wrong now.
-2. **Engine-truthful constraints**: Prism3D mods cannot run code. Every requirement is translated into what the engine actually supports (bone animations, dashboard UI element IDs, the lamp mask system, mirror cameras, FMOD banks), with documentation links instead of invented attributes.
-3. **In-game verification loop**: fixed camera views (V1–V5), screenshots from the game, side-by-side with the reference, A/B before/after, and a revert if "after" is not clearly better.
-4. **Deterministic diagnostics**: color-tagging meshes in a diagnostic build to find which file produces a broken pixel, raycast scripts to measure gaps, OpenCV to measure parts from photos.
-
----
-
-## Architecture at a glance
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/architecture-dark.svg">
-  <img alt="scs-mod-forge architecture: sources of truth, four roles (Modder, Director, Builder, Game), artifacts, and the numbered verification loop" src="docs/assets/architecture-light.svg" width="100%">
-</picture>
-
-**How to read it.** The diagram has three horizontal layers:
-
-- **Truth** (top): where facts come from. The Director consults the real vehicle, real-world references and engine documentation (dashed arrows) before it asks for anything. The game itself produces the last kind of truth: what actually renders and drives.
-- **Roles** (middle): four actors, left to right in the order work flows. Each has one job it is good at and a few things it must never do.
-- **Artifacts** (bottom): what each role hands over. Every artifact is a file you can open, review and keep.
-
-The numbered arrows are one **round**:
-
-1. The **Modder** reports what looks wrong, with screenshots.
-2. The **Director** gathers and inspects real references, and checks what the engine can do.
-3. The Director hands the Builder **one round prompt**: what is wrong now, how the real part looks, how to build it within engine limits, and how to prove it.
-4. The **Builder** (Claude Code + Blender MCP) diagnoses, builds and exports the mod.
-5. The **Game** renders the agreed views (V1–V5).
-6. The Modder sends the **F12 screenshots** back to the Builder.
-7. The Builder compares them with the references. It **iterates, or reverts** if the change isn't clearly better.
-
-Steps 4 → 7 repeat until the screenshots match. Nothing is accepted on the strength of a Blender render.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/round-loop-dark.svg">
-  <img alt="The nine stages of one round: capture, triage, references, engine truth, round prompt, diagnose, build, verify in game, report and close" src="docs/assets/round-loop-light.svg" width="100%">
-</picture>
-
-Full explanation: **[docs/01-architecture.md](docs/01-architecture.md)** · stage by stage: **[docs/02-round-workflow.md](docs/02-round-workflow.md)**
+1. **Real photos first.** Claude in Chrome finds and *inspects* real photos before anything is modeled, so the builder never works from memory.
+2. **Engine truth.** Prism3D mods cannot run code. Every requirement is phrased in what the engine supports (bone animations, dashboard UI IDs, the lamp mask system, mirror cameras, FMOD banks), with documentation links.
+3. **The game is the judge.** Fixed views, screenshots next to the photos, A/B before/after, revert if not better.
+4. **Evidence-based diagnosis.** Colour-tagged test builds, raycasts and photo measurements instead of "probably".
 
 ---
 
-## The loop in one paragraph
+## Quick start
 
-The modder plays, takes screenshots of what looks wrong and says why. The **Director** diagnoses each issue, finds the best real references (OEM press photos, owner's-manual diagrams, close-ups, night shots, independent measurements), checks what Prism3D can actually do, and writes **one round prompt**: what is wrong now, how the real part looks, how to build it inside engine limits, and how to prove it works. The **Builder** (Claude Code + Blender MCP) executes. It measures from photos instead of eyeballing, uses diagnostic builds instead of guessing, exports, and asks the modder for specific in-game screenshots. It is done only when the screenshots match the references. Then the next round starts.
+1. **Research side:** install [Claude in Chrome](https://claude.ai/chrome) and use it with Claude, so Claude can browse and look at images in your browser.
+2. **Build side:** install Blender, [SCS Blender Tools](https://modding.scssoft.com/wiki/Documentation/Tools/SCS_Blender_Tools), a **Blender MCP server** (e.g. the open-source `blender-mcp` add-on + server), and **Claude Code**. Register the MCP server with Claude Code. Details in [docs/11](docs/11-build-with-claude-code-and-blender-mcp.md).
+3. Put [`templates/CLAUDE.md`](templates/CLAUDE.md) in your mod project and fill in game, vehicle and paths.
+4. Extract the vanilla game data with SCS's extractor; Claude Code uses it as the syntax reference.
+5. **Round 1:** give Claude (in Chrome) your screenshots and the [research brief](templates/research-brief.md). Paste the resulting `round-prompt.md` into Claude Code. Verify in game. Repeat.
 
 ---
 
@@ -78,69 +99,64 @@ The modder plays, takes screenshots of what looks wrong and says why. The **Dire
 
 | # | Document | What you get |
 |---|---|---|
-| 01 | [Architecture](docs/01-architecture.md) | Roles, artifacts, data flow, why the split exists |
-| 02 | [The round workflow](docs/02-round-workflow.md) | Step-by-step lifecycle of one round, from screenshot to accepted change |
+| 01 | [Architecture](docs/01-architecture.md) | Components, hand-offs, the two loops, control gates, why two agents |
+| 02 | [The round workflow](docs/02-round-workflow.md) | One round, step by step, with who does what |
 | 03 | [Reference hunting](docs/03-references.md) | Where to find references, how to rank them, measuring from photos, licensing |
-| 04 | [Writing round prompts](docs/04-round-prompts.md) | Anatomy of a prompt that an agent cannot "pass" without doing the work |
-| 05 | [Prism3D constraints](docs/05-prism3d-constraints.md) | What mods can and cannot do, the systems you will touch, with SCS wiki links |
-| 06 | [Verification](docs/06-verification.md) | Standard views, A/B rule, overlays, color-tag diagnostics, telemetry |
+| 04 | [Writing round prompts](docs/04-round-prompts.md) | Anatomy of a prompt Claude Code can't "pass" without doing the work |
+| 05 | [Prism3D constraints](docs/05-prism3d-constraints.md) | What mods can and cannot do, with SCS wiki links |
+| 06 | [Verification](docs/06-verification.md) | Standard views, A/B rule, overlays, colour-tag diagnostics, telemetry |
 | 07 | [Failure catalog](docs/07-failure-catalog.md) | Symptom → cause → fix for every problem we hit |
 | 08 | [Physics calibration](docs/08-physics-calibration.md) | Calibrating performance against measured road-test data |
-| 09 | [Sound](docs/09-sound.md) | Recording a real car, legal sources, input spec, FMOD bank pipeline |
+| 09 | [Sound](docs/09-sound.md) | Recording a real car, legal sources, input spec, FMOD pipeline |
+| 10 | [Research with Claude in Chrome](docs/10-research-with-claude-in-chrome.md) | The concrete browser techniques for finding and verifying reference photos |
+| 11 | [Build with Claude Code + Blender MCP](docs/11-build-with-claude-code-and-blender-mcp.md) | Setup, project layout, how a build session runs |
 
 ## Templates
 
-- [`templates/round-prompt.md`](templates/round-prompt.md): fill-in skeleton for a round
-- [`templates/reference-table.md`](templates/reference-table.md): reference table with ranking columns
-- [`templates/acceptance-checklist.md`](templates/acceptance-checklist.md): what must be true before a round is closed
-- [`templates/diag-colors.md`](templates/diag-colors.md): color-tag diagnostic log
-- [`templates/CLAUDE.md`](templates/CLAUDE.md): standing rules to drop into your mod project for Claude Code
+| File | Used by | Purpose |
+|---|---|---|
+| [`templates/research-brief.md`](templates/research-brief.md) | you → Claude in Chrome | What to send Claude at the start of a round |
+| [`templates/round-prompt.md`](templates/round-prompt.md) | Claude in Chrome → Claude Code | Skeleton of the prompt Claude writes |
+| [`templates/reference-table.md`](templates/reference-table.md) | Claude in Chrome | Reference table with ranking columns |
+| [`templates/CLAUDE.md`](templates/CLAUDE.md) | Claude Code | Standing rules in your mod project |
+| [`templates/acceptance-checklist.md`](templates/acceptance-checklist.md) | you + Claude Code | What must be true before a round is closed |
+| [`templates/diag-colors.md`](templates/diag-colors.md) | Claude Code | Colour-tag diagnostic log |
 
 ## Tools
 
-Plain Python (`pip install -r tools/requirements.txt`):
+Python (`pip install -r tools/requirements.txt`), used by Claude Code:
 
 | Tool | Purpose |
 |---|---|
 | [`tools/photo_measure.py`](tools/photo_measure.py) | Perspective-correct a reference photo and extract contours + relative dimensions |
 | [`tools/compare_images.py`](tools/compare_images.py) | Side-by-side, 50/50 overlay and diff heat-map of a screenshot vs a reference |
 | [`tools/gear_table.py`](tools/gear_table.py) | Speed/RPM table from gear ratios, final drive and tyre size |
-| [`tools/perf_from_telemetry.py`](tools/perf_from_telemetry.py) | Extract 0–100, 60–100, 80–120… times from a time/speed CSV |
+| [`tools/perf_from_telemetry.py`](tools/perf_from_telemetry.py) | 0–100, 60–100, 80–120… times from a time/speed CSV |
 | [`tools/check_wav.py`](tools/check_wav.py) | Validate audio recordings against the sound input spec |
 
-Blender (run inside Blender, by hand or through the MCP server):
+Blender scripts (Claude Code runs them through the Blender MCP server, or you run them in Blender):
 
 | Script | Purpose |
 |---|---|
-| [`tools/blender/mesh_audit.py`](tools/blender/mesh_audit.py) | Report non-manifold edges, concave n-gons, flipped normals, zero-area faces, loose geometry |
-| [`tools/blender/diag_color_tag.py`](tools/blender/diag_color_tag.py) | Assign unique flat colors to selected objects and write the color map |
-| [`tools/blender/gap_raycast.py`](tools/blender/gap_raycast.py) | Measure gaps between two surfaces (e.g. dashboard ↔ windshield) along an edge |
+| [`tools/blender/mesh_audit.py`](tools/blender/mesh_audit.py) | Non-manifold edges, concave n-gons, flipped normals, zero-area faces, duplicates |
+| [`tools/blender/diag_color_tag.py`](tools/blender/diag_color_tag.py) | Unique flat colours per object for a diagnostic build + colour map |
+| [`tools/blender/gap_raycast.py`](tools/blender/gap_raycast.py) | Gap between two surfaces along an edge (e.g. dashboard ↔ windshield) |
 | [`tools/blender/eye_line.py`](tools/blender/eye_line.py) | Project a contact line from the driver's eye onto glass (e.g. frit band height) |
 
 ## Worked example
 
-[`examples/civic-fc/`](examples/civic-fc/README.md) contains the real round prompts from the Civic project (in Romanian, the language the project was run in) and a round-by-round case study (in English) of what was asked, what failed and what changed in the method.
+[`examples/civic-fc/`](examples/civic-fc/README.md): every real round prompt from the Civic project (in Romanian, the language it was run in) and a round-by-round case study in English.
 
----
-
-## Quick start
-
-1. **Set up the Builder.** Install Blender, [SCS Blender Tools](https://modding.scssoft.com/wiki/Documentation/Tools/SCS_Blender_Tools), a Blender MCP server, and Claude Code. Connect Claude Code to Blender through MCP.
-2. **Drop [`templates/CLAUDE.md`](templates/CLAUDE.md) into your mod project.** It encodes the non-negotiable rules: engine truth, no invented attributes, in-game verification, revert-if-not-better.
-3. **Extract the vanilla game data** you will imitate, using SCS's extractor. Patterns from vanilla trucks are your syntax reference.
-4. **Run round 1.** Take screenshots of what is wrong, gather references ([docs/03](docs/03-references.md)), and write the round with [`templates/round-prompt.md`](templates/round-prompt.md).
-5. **Close the round only with the [acceptance checklist](templates/acceptance-checklist.md).**
-
-## Principles (the short version)
+## Principles
 
 1. **The game is the judge.** Blender renders are drafts.
-2. **No reference, no work.** Every component gets real photos *before* modeling.
+2. **No photo, no model.** Real references come before modeling, and every one is inspected.
 3. **Measure, don't eyeball.** Proportions come from photos and published dimensions.
 4. **Say what the engine can do.** No invented `.sii` attributes; cite vanilla files or the wiki.
-5. **Diagnose with evidence.** Color-tag builds, raycasts, overlays. Never "probably".
+5. **Diagnose with evidence.** Colour-tag builds, raycasts, overlays.
 6. **A/B or revert.** A change that is not clearly better is undone.
-7. **The owner of the real thing has the last word.** Specs from the internet are hypotheses until the modder confirms them on the real vehicle.
+7. **The real car has the last word.** Internet specs are hypotheses until you confirm them on the vehicle.
 
 ## License
 
-Code and docs: [MIT](LICENSE). Third-party images are only **linked**, never included. Their copyright stays with their owners.
+Code and docs: [MIT](LICENSE). Third-party images are only **linked**, never included; their copyright stays with their owners.

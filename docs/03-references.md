@@ -1,6 +1,6 @@
 # 03 · Reference hunting
 
-Realism comes from references, not from "make it realistic". The Director's job is to find the **few best** references per component and **look at every one** before linking it.
+Realism comes from references, not from "make it realistic". Claude in Chrome's job is to find the **few best** references per component and **look at every one** before linking it.
 
 ## 1. Source ranking (best first)
 
@@ -33,7 +33,7 @@ For every reference write one line:
 | C3 | cluster while driving, 80 km/h, red theme: rpm shown as white fill + amber tip | <url> | caveat: CVT car (shows "D") |
 ```
 
-Things the Director caught only by looking:
+Things Claude in Chrome caught only by looking:
 
 - an aftermarket ring on a tweeter photo;
 - India-spec camera under the side mirror;

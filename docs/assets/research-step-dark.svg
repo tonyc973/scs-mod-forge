@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="490" viewBox="0 0 1280 490" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="How Claude in Chrome finds and verifies reference photos">
+<title>How Claude in Chrome finds and verifies reference photos</title>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8B949E"/></marker>
+  <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+    <feDropShadow dx="0" dy="1.5" stdDeviation="2.2" flood-color="#000" flood-opacity="0.45"/>
+  </filter>
+</defs>
+<rect width="1280" height="490" rx="16" fill="#0D1117"/>
+<text x="40" y="46" font-size="13" font-weight="700" fill="#9198A1" text-anchor="start" letter-spacing="0.5">scs-mod-forge · step 1 in detail</text>
+<text x="40" y="74" font-size="22" font-weight="700" fill="#E6EDF3" text-anchor="start">How Claude in Chrome turns “the vents look fake” into verified reference photos</text>
+<g filter="url(#shadow)">
+<rect x="40" y="110" width="220" height="206" rx="12" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+</g>
+<rect x="40" y="110" width="220" height="5" rx="2" fill="#6366F1"/>
+<circle cx="64" cy="142" r="11" fill="#6366F1"/>
+<text x="64" y="146.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+<text x="84" y="147" font-size="15.5" font-weight="700" fill="#E6EDF3" text-anchor="start">Search</text>
+<text x="58" y="180" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">image search with precise</text>
+<text x="58" y="200" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">words: model, generation,</text>
+<text x="58" y="220" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">part, view</text>
+<text x="58" y="240" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start"></text>
+<text x="58" y="260" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">e.g. “honda civic 10th gen</text>
+<text x="58" y="280" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">center air vent close up”</text>
+<path d="M263,213.0 L276,213.0" fill="none" stroke="#8B949E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)">
+<rect x="280" y="110" width="220" height="206" rx="12" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+</g>
+<rect x="280" y="110" width="220" height="5" rx="2" fill="#6366F1"/>
+<circle cx="304" cy="142" r="11" fill="#6366F1"/>
+<text x="304" y="146.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+<text x="324" y="147" font-size="15.5" font-weight="700" fill="#E6EDF3" text-anchor="start">Extract URLs</text>
+<text x="298" y="180" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">script on the results page</text>
+<text x="298" y="200" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">reads each hit’s direct</text>
+<text x="298" y="220" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">image URL + source page</text>
+<text x="298" y="240" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">(query strings stripped)</text>
+<text x="298" y="260" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start"></text>
+<text x="298" y="280" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">→ a list, not thumbnails</text>
+<path d="M503,213.0 L516,213.0" fill="none" stroke="#8B949E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)">
+<rect x="520" y="110" width="220" height="206" rx="12" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+</g>
+<rect x="520" y="110" width="220" height="5" rx="2" fill="#6366F1"/>
+<circle cx="544" cy="142" r="11" fill="#6366F1"/>
+<text x="544" y="146.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+<text x="564" y="147" font-size="15.5" font-weight="700" fill="#E6EDF3" text-anchor="start">Open &amp; look</text>
+<text x="538" y="180" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">opens every candidate,</text>
+<text x="538" y="200" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">takes a screenshot,</text>
+<text x="538" y="220" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">zooms on the details that</text>
+<text x="538" y="240" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">matter (louvers, labels,</text>
+<text x="538" y="260" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">stitching, lamp layout)</text>
+<text x="538" y="280" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start"></text>
+<path d="M743,213.0 L756,213.0" fill="none" stroke="#8B949E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)">
+<rect x="760" y="110" width="220" height="206" rx="12" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+</g>
+<rect x="760" y="110" width="220" height="5" rx="2" fill="#8B5CF6"/>
+<circle cx="784" cy="142" r="11" fill="#8B5CF6"/>
+<text x="784" y="146.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+<text x="804" y="147" font-size="15.5" font-weight="700" fill="#E6EDF3" text-anchor="start">Accept / reject</text>
+<text x="778" y="180" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">✗ aftermarket parts</text>
+<text x="778" y="200" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">✗ other market / trim</text>
+<text x="778" y="220" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">✗ wrong generation</text>
+<text x="778" y="240" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">✓ OEM, manual, review</text>
+<text x="778" y="260" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">✓ photo of the part</text>
+<text x="778" y="280" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">     in use (lit, driving)</text>
+<path d="M983,213.0 L996,213.0" fill="none" stroke="#8B949E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g filter="url(#shadow)">
+<rect x="1000" y="110" width="220" height="206" rx="12" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+</g>
+<rect x="1000" y="110" width="220" height="5" rx="2" fill="#6366F1"/>
+<circle cx="1024" cy="142" r="11" fill="#6366F1"/>
+<text x="1024" y="146.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+<text x="1044" y="147" font-size="15.5" font-weight="700" fill="#E6EDF3" text-anchor="start">Reference table</text>
+<text x="1018" y="180" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">id · what it shows ·</text>
+<text x="1018" y="200" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">caveats · URL</text>
+<text x="1018" y="220" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start"></text>
+<text x="1018" y="240" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">scale anchors (known</text>
+<text x="1018" y="260" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">dimensions) for</text>
+<text x="1018" y="280" font-size="12.2" font-weight="400" fill="#9198A1" text-anchor="start">measuring from photos</text>
+<rect x="40" y="348" width="1200" height="112" rx="12" fill="#161B22" stroke="#30363D" stroke-width="1"/>
+<text x="60" y="376" font-size="14" font-weight="700" fill="#E6EDF3" text-anchor="start">What ends up in the prompt for Claude Code</text>
+<circle cx="66" cy="400" r="3" fill="#6366F1"/>
+<text x="78" y="404" font-size="12.5" font-weight="700" fill="#E6EDF3" text-anchor="start">Reference table</text>
+<text x="240" y="404" font-size="12.5" font-weight="400" fill="#9198A1" text-anchor="start">only images that were opened and checked, each with caveats</text>
+<circle cx="66" cy="422" r="3" fill="#6366F1"/>
+<text x="78" y="426" font-size="12.5" font-weight="700" fill="#E6EDF3" text-anchor="start">“Now” vs “real”</text>
+<text x="240" y="426" font-size="12.5" font-weight="400" fill="#9198A1" text-anchor="start">what your screenshot shows vs how the real part looks, citing the image ids</text>
+<circle cx="66" cy="444" r="3" fill="#6366F1"/>
+<text x="78" y="448" font-size="12.5" font-weight="700" fill="#E6EDF3" text-anchor="start">Numbers</text>
+<text x="240" y="448" font-size="12.5" font-weight="400" fill="#9198A1" text-anchor="start">dimensions with sources (e.g. mirror protrusion from width with / without mirrors)</text>
+</svg>
